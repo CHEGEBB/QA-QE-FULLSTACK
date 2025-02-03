@@ -80,3 +80,37 @@ body {
     padding: 2rem;
     text-align: center;
 }
+.right-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 55%;
+}
+.left-container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+    width: 45%;
+}
+.left-container img{
+    width: 100%;
+    max-width: 400px;
+}
+.right-container h1{
+    font-size: 50px;
+    font-weight: 700;
+    color: hsl(0, 0%, 8%);
+    width: 330px;
+    text-align: left;
+}
+.right-container p{
+    font-size: 18px;
+    font-weight: 400;
+    color: hsl(0, 0%, 41%);
+    width: 360px;
+    text-align: left;
+}
