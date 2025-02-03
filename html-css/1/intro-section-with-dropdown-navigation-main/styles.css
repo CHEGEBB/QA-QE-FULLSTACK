@@ -43,6 +43,40 @@ body {
     gap: 16px;
     padding: 1rem 2rem;
 }
+.auth-btns button{
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    color: hsl(0, 0%, 41%);
+    font-family: 'Epilogue', sans-serif;
+
+}
+.login button{
+    background-color: hsl(0, 0%, 98%);
+}
+.login button:hover{
+    color:hsl(0, 0%, 8%);
+}
+.register button{
+    background-color: hsl(0, 0%, 98%);
+    border: 2px solid hsl(0, 0%, 41%);
+    border-radius: 12px;
+}
+.register button:hover{
+    color: hsl(0, 0%, 8%);
+    border-color: hsl(0, 0%, 8%);
+}
 .hide{
     display: none;
+}
+.intro-section{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding: 2rem;
+    text-align: center;
 }
