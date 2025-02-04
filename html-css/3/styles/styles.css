@@ -13,6 +13,7 @@ body {
 .nav{
     display: flex;
     justify-content: space-between;
+    height: 80px;
     align-items: center;
     color: #fff;
     padding: 10px 20px;
@@ -152,7 +153,7 @@ body {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 46%;
+    top: 41%;
     transform: translateY(-50%);
     left: 46%;
 }
@@ -160,11 +161,11 @@ body {
     width: 20px;
     height: 20px;
     position: absolute;
-    top: 61%;
+    top: 56%;
     transform: translateY(-50%);
     left: 46%;
 }
-.form-button {
+.form-button{
     display: flex;
     flex-direction: row;
     justify-content: flex-end;
@@ -173,24 +174,50 @@ body {
     width: 100%; 
     margin-top: 20px; 
 }
-
-.form-button p {
+.order-cancel {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+    width: 100%; 
+    margin-top: 20px; 
+    margin-left: 70px;
+}
+.form-button p , .order-cancel p{
     color:#333;
     font-size: 14px;
 }
 
-.form-button button {
+.form-button button{
     background-color: #3b7dbb;
     padding: 10px 20px;
     color: #fff;
+    width: 120px;
     border: none;
     border-radius: 10px;
     font-size: 16px;
     cursor: pointer;
     font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 6px -1px rgba(59, 125, 187, 0.3), 
+}
+.order-cancel button{
+    background-color:#3b7dbb ;
+    padding: 10px 20px;
+    color: #fff;
+    width: 160px;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    box-shadow: 0 4px 6px -1px rgba(156, 163, 170, 0.3), 0 2px 4px 0 rgba(0, 0, 0, 0.12);
+    margin-left: 70px;
+    margin-top: 20px;
+    margin-bottom: 20px;
 }
 
-.form-button button:hover {
+.form-button button:hover , .order-cancel button:hover{
     background-color: #1e4474;
 }
 hr{
@@ -198,6 +225,7 @@ hr{
     border: none;
     border-bottom: 1px solid #ccc;
     margin: 0 auto;
-    margin-top: 20px;
+    margin-top: 90px;
+
 
 }
