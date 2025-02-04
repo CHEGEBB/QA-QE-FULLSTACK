@@ -18,6 +18,7 @@ body {
     color: #fff;
     padding: 10px 20px;
     border-bottom: 2px solid #f5f5f5;
+    overflow: hidden;
 }
 .nav-links a, .account a{
     text-decoration: none;
@@ -65,12 +66,6 @@ body {
 .left-container{
     background-color: #eff6ff;
     width: 60%;
-    height: 100vh;
-    border-radius: 10px;
-}
-.right-container{
-    background-color:#eff6ff;
-    width: 36%;
     height: 100vh;
     border-radius: 10px;
 }
@@ -228,4 +223,120 @@ hr{
     margin-top: 90px;
 
 
+}
+.right-container{
+    background-color:#eff6ff;
+    width: 36%;
+    height: 100vh;
+    border-radius: 10px;
+}
+.order-summary{
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+}
+.order-view{
+    display: flex;
+    flex-direction:column;
+    gap: 20px;
+    align-items: center;
+    width: 100%;
+
+}
+.order-view h3{
+    font-size: 18px;
+    margin-bottom: 20px;
+    width: 100%;
+    text-align: left;
+    margin: 20px;
+    margin-left: 80px;
+    padding: 10px;
+}
+.order-image img{
+    width: 400px;
+    height: 160px;
+    object-fit: cover;
+    margin-top: -10px;
+}
+.product-details{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+justify-content: center;
+    gap: 20px;
+    width: 100%;
+
+}
+.minus, .plus{
+    display: flex;
+    flex-direction: column;
+    color: #333;
+    font-size: 18px;
+    cursor: pointer;
+    background-color: #cbd5e1;
+    width: 35px;
+    height: 35px;
+    border-radius: 6px;
+    justify-content: center;
+    align-items: center;
+}
+.add-remove{
+    display: flex;
+    flex-direction: row;
+    gap: 10px;
+}
+.name{
+    margin-top: 10px;
+}
+.quantity{
+    margin-top: 6px;
+    font-weight: 600;
+}
+.pricing{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.card{
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    overflow: hidden;
+    gap: 20px;
+
+}
+.card-input{
+    display: flex;
+    flex-direction: column;
+}
+.card-input input{
+    background-color: #cbd5e1;
+    padding: 10px;
+    width: 200px;
+    height: 50px;
+    border: none;
+    border-bottom: 1px solid #ccc;
+    border-radius: 10px;
+    outline: none;
+}
+.card-button button{
+    border: 2px solid #3b7dbb;
+    background-color: #eff6ff;
+    padding: 10px 20px;
+    width: 120px;
+    border-radius: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    font-family: 'Poppins', sans-serif;
+    margin-top: 23px;
+}
+.total{
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+    margin-top: 40px;
+    justify-content: space-between;
 }

@@ -20,93 +20,132 @@
             <a href="#">Help</a>
         </div>
         <div class="right">
-        <div class="account">
-            <a href="#">Account</a>
-            <span>
-                <img src="./images/dropdown.svg" alt="dropdown">
-            </span>
+            <div class="account">
+                <a href="#">Account</a>
+                <span>
+                    <img src="./images/dropdown.svg" alt="dropdown">
+                </span>
+            </div>
+            <div class="items-count">
+                <img src="./images/bag.svg" alt="Bag Icon">
+                <span>
+                    <p> 3 Items
+                    </p>
+                </span>
+            </div>
+            <div class="user-profile">
+                <img src="./images/user.jpg" alt="User Icon">
+            </div>
         </div>
-        <div class="items-count">
-            <img src="./images/bag.svg" alt="Bag Icon">
-            <span>
-                <p> 3 Items
-                </p>
-            </span>
-        </div>
-        <div class="user-profile">
-            <img src="./images/user.jpg" alt="User Icon">
-        </div>
-    </div>
     </div>
     <div class="main-container">
-    <div class="left-container">
-        <div class="progress">
-            <span class="active">Account</span>
-            <div class="line"></div>
-            <div class="check">
-                <img src="./images/check.svg" alt="Checkmark">
-            </div>
-            <div class="line"></div>
-            <span class="inactive"> Shipping</span>
-            <div class="line"></div>
-            <div class="check">
-                <img src="./images/check.svg" alt="Checkmark">
-            </div>
-            <div class="line"></div>
-            <span class="inactive2"> Payment</span>
-
-
-        </div>
-        <div class="account-section">
-            <h2>Account Details</h2>
-            <div class="form">
-                <div class="form-detail">
-                <label for="Email" type="Email">Email address</label>
-                <input type="email" id="Email" name="email"  placeholder="Email@myemail.com">
-                <div class="check-mark">
+        <div class="left-container">
+            <div class="progress">
+                <span class="active">Account</span>
+                <div class="line"></div>
+                <div class="check">
                     <img src="./images/check.svg" alt="Checkmark">
                 </div>
-            </div>
-            <div class="form-detail">
-                <label for="Password" type="password">Password</label>
-                <input type="password" id="Password" name="password" placeholder="********">
-                <div class="check-mark2">
+                <div class="line"></div>
+                <span class="inactive"> Shipping</span>
+                <div class="line"></div>
+                <div class="check">
                     <img src="./images/check.svg" alt="Checkmark">
                 </div>
-            </div>
-            <div class="form-button">
-                <p>Register for account</p>
-                <button>Login</button>
-            </div>
+                <div class="line"></div>
+                <span class="inactive2"> Payment</span>
+
 
             </div>
-            <hr/>
-            <div class="order-cancel">
-                <p>Cancel order</p>
-                <button>Shipping details</button>
+            <div class="account-section">
+                <h2>Account Details</h2>
+                <div class="form">
+                    <div class="form-detail">
+                        <label for="Email" type="Email">Email address</label>
+                        <input type="email" id="Email" name="email" placeholder="Email@myemail.com">
+                        <div class="check-mark">
+                            <img src="./images/check.svg" alt="Checkmark">
+                        </div>
+                    </div>
+                    <div class="form-detail">
+                        <label for="Password" type="password">Password</label>
+                        <input type="password" id="Password" name="password" placeholder="********">
+                        <div class="check-mark2">
+                            <img src="./images/check.svg" alt="Checkmark">
+                        </div>
+                    </div>
+                    <div class="form-button">
+                        <p>Register for account</p>
+                        <button>Login</button>
+                    </div>
+
+                </div>
+                <hr />
+                <div class="order-cancel">
+                    <p>Cancel order</p>
+                    <button>Shipping details</button>
+                </div>
             </div>
         </div>
+        <div class="right-container">
+            <div class="order-summary">
+                <div class="order-view">
+                    <h3>Order Summary</h3>
+                    <div class="order-image">
+                        <img src="./images/headphones.jpg" alt="Headphones">
+                    </div>
+                </div>
+                <div class="product-details">
+                    <div class="name">
+                        <h3>Sony wireless headphones</h3>
+                        <h4>£320.45</h4>
+                    </div>
+                    <div class="add-remove">
+                        <div class="minus">
+                            <img src="./images/minus.svg" alt="minus">
+                        </div>
+                        <div class="quantity">
+                            <p>1</p>
+                        </div>
+                        <div class="plus">
+                            <img src="./images/plus.svg" alt="plus">
+                        </div>
+                    </div>
+                </div>
+                <div class="pricing">
+                <div class="card">
+                    <div class="card-input">
+                    <label for="discount" type="text">Gift Card / Discount code</label>
+                    <input type="text" id="discount" name="discount">
+                </div>
+                <div class="card-button">
+                    <button>Apply</button>
+                </div>
+                </div>
+                <div class="total">
+                    <div class="total-left">
+                        <p>Subtotal:</p>
+                        <p>Tax:</p>
+                        <p>Shipping:</p>
+                        <p>Total:</p>
+                    </div>
+                    <div class="total-right">
+                        <p>316.55</p>
+                        <p>3.45</p>
+                        <p>Free</p>
+                        <p>320.45</p>
+                    </div>
+                </div>
+            </div>
+            </div>
+
+        </div>
     </div>
-    <div class="right-container">
-        Order Summary section:
-
-        Order Summary
-        Sony wireless headphones
-        £320.45
-        Gift Card / Discount code
-        Apply
-        Sub total: £316.55
-        Tax: £3.45
-        Shipping: Free
-        Total: £320.45
-    
-    </div>
-</div>
-
-  
 
 
-   
+
+
+
 </body>
 
 </html>
