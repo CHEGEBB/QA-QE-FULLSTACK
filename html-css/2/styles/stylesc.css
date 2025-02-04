@@ -1,0 +1,93 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&family=Outfit:wght@100..900&family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Rubik:ital,wght@0,300..900;1,300..900&family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    
+}
+body{
+    background-color: #D9E5F3;
+    font-family: 'Inter', sans-serif;
+}
+.container{
+    margin: 0 auto;
+    margin-top: 60px;
+    background-color: rgba(255, 255, 255, 0.5);
+    width: 300px;
+    height: 470px;
+    border-radius: 35px;
+    padding: 20px ;
+    display: flex;
+    flex-direction: column;
+    gap: 60px;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 
+    0px 10px 30px rgba(208, 225, 243, 0.8);
+    
+}
+.content{
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    text-align: center;
+}
+.content h1{
+    font-weight: 500;
+    
+}
+.content p{
+    color: #666;
+}
+.content .dot{
+    margin-top: -9px;
+}
+.google-logo{
+    margin: 0 auto;
+    
+
+}
+.google-logo img{
+    width: 60px;
+    height: 60px;
+    
+}
+.socials{
+    margin-top: 20px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    
+}
+.socials img{
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+.search{
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+.search button{
+    padding: 10px 20px;
+    border: none;
+    border-radius: 20px;
+    background-color: #fff;
+    color: black;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    font-size: 16px;
+    box-shadow:2px 2px 2px #D9E5F3;
+
+
+    
+}
+.circle-background{
+    position: absolute;
+    z-index: -1;
+    width: 80px;
+    height: 80px;
+}
