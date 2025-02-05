@@ -4,14 +4,16 @@
   "description": "",
   "main": "main.js",
   "scripts": {
+    "dev":"node main.js",
+    "dev:start":"nodemon main.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "dependencies": {
-    "chalk": "^5.4.1"
-  },
-  "type":"module"
+    "chalk": "^5.4.1",
+    "nodemon": "^3.1.9"
+  }
 }
