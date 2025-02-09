@@ -1,0 +1,21 @@
+{
+  "name": "assignment2",
+  "version": "1.0.0",
+  "description": "",
+  "main": "bank.js",
+  "scripts": {
+    "dev": "node banks.js",
+    "dev:start": "node test.js",
+    "start": "nodemon bank.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
+    "nodemon": "^3.1.9"
+  }
+}
