@@ -34,66 +34,6 @@ function processWithdrawal(user, inputPassword, inputMfaCode, withdrawalAmount) 
     return 'Transaction successful! New Balance: ' + user.balance;
 }
 
-// Test data setup
-const testUser = {
-    inputPassword: bcrypt.hashSync('password123', 10), 
-    correctMfaCode: '123456',
-    balance: 1000,
-    dailyLimit: 500
-};
-
-// Test cases
-async function runTests() {
-    console.log('Starting tests...\n');
-
-    // Test 1: Successful withdrawal
-    console.log('Test 1: Valid withdrawal');
-    console.log(await processWithdrawal(
-        testUser,
-        'password123',
-        '123456',
-        200
-    ));
-
-    // Test 2: Wrong password
-    console.log('\nTest 2: Wrong password');
-    console.log(await processWithdrawal(
-        testUser,
-        'wrongpassword',
-        '123456',
-        200
-    ));
-
-    // Test 3: Wrong MFA code
-    console.log('\nTest 3: Wrong MFA code');
-    console.log(await processWithdrawal(
-        testUser,
-        'password123',
-        '000000',
-        200
-    ));
-
-    // Test 4: Insufficient balance
-    console.log('\nTest 4: Insufficient balance');
-    console.log(await processWithdrawal(
-        testUser,
-        'password123',
-        '123456',
-        2000
-    ));
-
-    // Test 5: Exceeds daily limit
-    console.log('\nTest 5: Exceeds daily limit');
-    console.log(await processWithdrawal(
-        testUser,
-        'password123',
-        '123456',
-        600
-    ));
-}
-
-runTests();
-
 /*Why is it important to store passwords in a hashed format? What security
 advantage does this provide over plain text passwords? */
 //When we store passwords in a hashed format, it is more secure than storing them in plain text. Hashing is a one-way function that converts the password into a fixed-length string of characters. This means that even if the hashed password is exposed, it is difficult to reverse-engineer the original password. 
