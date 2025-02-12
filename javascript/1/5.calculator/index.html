@@ -7,57 +7,59 @@
     <title>Windows Calculator</title>
 </head>
 <body>
-    <div class="container">
-        <div class="calculator">
-            <div class="header">
-                <button class="menu-btn">☰</button>
-                <h1 class="calc-type">Standard</h1>
-                <button class="menu-btn history-btn">🕒</button>
+    <div class="container" id="calculator-container">
+        <div class="calculator" id="calculator">
+            <div class="header" id="calc-header">
+                <button class="menu-btn" id="menu-toggle">☰</button>
+                <h1 class="calc-type" id="calculator-type">Standard</h1>
+                <button class="menu-btn history-btn" id="history-toggle">🕒</button>
             </div>
             
-            <div class="display">28</div>
+            <div class="display" id="display"></div>
+            <div class="history" id="history">28</div>
             
-            <div class="memory-row">
-                <button class="memory-btn">MC</button>
-                <button class="memory-btn">MR</button>
-                <button class="memory-btn">M+</button>
-                <button class="memory-btn">M-</button>
-                <button class="memory-btn">MS</button>
-                <button class="memory-btn">M▾</button>
+            <div class="memory-row" id="memory-buttons">
+                <button class="memory-btn" id="memory-clear">MC</button>
+                <button class="memory-btn" id="memory-recall">MR</button>
+                <button class="memory-btn" id="memory-add">M+</button>
+                <button class="memory-btn" id="memory-subtract">M-</button>
+                <button class="memory-btn" id="memory-store">MS</button>
+                <button class="memory-btn" id="memory-list">M▾</button>
             </div>
             
-            <div class="buttons">
-                <button class="btn operator">%</button>
-                <button class="btn operator">CE</button>
-                <button class="btn operator">C</button>
-                <button class="btn operator">⌫</button>
+            <div class="buttons" id="keypad">
+                <button class="btn operator" id="percent">%</button>
+                <button class="btn operator" id="clear-entry">CE</button>
+                <button class="btn operator" id="clear">C</button>
+                <button class="btn operator" id="backspace">⌫</button>
                 
-                <button class="btn operator">¹/x</button>
-                <button class="btn operator">x²</button>
-                <button class="btn operator">√x</button>
-                <button class="btn operator">÷</button>
+                <button class="btn operator" id="reciprocal">¹/x</button>
+                <button class="btn operator" id="square">x²</button>
+                <button class="btn operator" id="square-root">√x</button>
+                <button class="btn operator" id="divide">÷</button>
                 
-                <button class="btn number">7</button>
-                <button class="btn number">8</button>
-                <button class="btn number">9</button>
-                <button class="btn operator">×</button>
+                <button class="btn number" id="num-7">7</button>
+                <button class="btn number" id="num-8">8</button>
+                <button class="btn number" id="num-9">9</button>
+                <button class="btn operator" id="multiply">×</button>
                 
-                <button class="btn number">4</button>
-                <button class="btn number">5</button>
-                <button class="btn number">6</button>
-                <button class="btn operator">-</button>
+                <button class="btn number" id="num-4">4</button>
+                <button class="btn number" id="num-5">5</button>
+                <button class="btn number" id="num-6">6</button>
+                <button class="btn operator" id="subtract">-</button>
                 
-                <button class="btn number">1</button>
-                <button class="btn number">2</button>
-                <button class="btn number">3</button>
-                <button class="btn operator">+</button>
+                <button class="btn number" id="num-1">1</button>
+                <button class="btn number" id="num-2">2</button>
+                <button class="btn number" id="num-3">3</button>
+                <button class="btn operator" id="add">+</button>
                 
-                <button class="btn operator">±</button>
-                <button class="btn number">0</button>
-                <button class="btn operator">.</button>
-                <button class="btn equals">=</button>
+                <button class="btn operator" id="negate">±</button>
+                <button class="btn number" id="num-0">0</button>
+                <button class="btn operator" id="decimal">.</button>
+                <button class="btn equals" id="equals">=</button>
             </div>
         </div>
     </div>
+    <script src="./script.js"></script>
 </body>
 </html>

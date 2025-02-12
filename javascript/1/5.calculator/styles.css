@@ -20,6 +20,7 @@
     border-radius: 8px;
     padding: 12px;
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    position: relative;
 }
 
 .header {
@@ -44,6 +45,18 @@
 
 .history-btn {
     margin-left: auto;
+}
+
+.history {
+    position: absolute;
+    top: 45px;
+    right: 12px;
+    border-radius: 4px;
+    padding: 8px;
+    font-size: 14px;
+    min-width: 120px;
+    text-align: right;
+    z-index: 100;
 }
 
 .display {
