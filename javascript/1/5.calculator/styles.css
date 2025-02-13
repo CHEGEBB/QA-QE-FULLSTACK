@@ -62,11 +62,17 @@
 .display {
     text-align: right;
     padding: 20px 10px;
-    font-size: 42px;
+    font-size: clamp(24px, 8vw, 42px); /* Responsive font size */
     height: 120px;
     display: flex;
     align-items: flex-end;
     justify-content: flex-end;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    word-wrap: break-word;
+    line-height: 1.2;
+    min-height: 80px;
 }
 
 .memory-row {
@@ -82,6 +88,7 @@
     padding: 8px;
     font-size: 12px;
     color: #666;
+    white-space: nowrap;
 }
 
 .buttons {
@@ -92,12 +99,15 @@
 
 .btn {
     border: none;
-    padding: 15px;
-    font-size: 14px;
+    padding: clamp(10px, 3vw, 15px);
+    font-size: clamp(12px, 4vw, 16px);
     background-color: #f9f9f9;
     cursor: pointer;
     border-radius: 4px;
     transition: background-color 0.2s;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .btn:hover {
@@ -106,12 +116,11 @@
 
 .number {
     background-color: #ffffff;
-    font-size: 16px;
     font-weight: 500;
 }
 
 .operator {
-    font-size: 16px;
+    font-size: clamp(12px, 4vw, 16px);
 }
 
 .equals {
@@ -123,10 +132,35 @@
     background-color: #005aa6;
 }
 
-/* Adding some responsive adjustments */
+/* Responsive design improvements */
 @media (max-width: 360px) {
     .calculator {
         width: 100%;
         border-radius: 0;
+        padding: 8px;
+    }
+    
+    .memory-row {
+        gap: 1px;
+    }
+    
+    .memory-btn {
+        padding: 6px 4px;
+        font-size: 11px;
+    }
+    
+    .buttons {
+        gap: 1px;
+    }
+}
+
+@media (max-width: 280px) {
+    .memory-btn {
+        font-size: 10px;
+        padding: 4px 2px;
+    }
+    
+    .btn {
+        padding: 8px 4px;
     }
 }
