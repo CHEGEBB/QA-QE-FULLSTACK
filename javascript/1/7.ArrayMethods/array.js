@@ -51,3 +51,41 @@ const users = [
       ]
     }
   ];
+
+  function analyze() {
+    const latestDate = new Date("2024-05-16T16:55:00");
+    const lastDate= new Date("2024-05-09T16:55:00");
+  
+    const activeUsers = users.filter((user)=> {
+      return user.posts.filter((post)=> {
+        return new Date(post.timestamp) > lastDate;
+      }).length > 0;
+    });
+  
+    // 2. Get popular posts from active users
+    const allPopularPosts = [];
+    activeUsers.map(function(user) {
+      const userPopularPosts = user.posts.filter(function(post) {
+        return post.likes >= 10;
+      });
+      allPopularPosts.push(...userPopularPosts);  
+    });
+  
+    // 3. Calculate total likes
+    const stats = allPopularPosts.reduce(function(acc, post) {
+      return {
+        totalLikes: acc.totalLikes + post.likes,
+        postCount: acc.postCount + 1
+      };
+    }, { totalLikes: 0, postCount: 0 });
+  
+    const averageLikes = activeUsers.length ? stats.totalLikes / activeUsers.length : 0;
+  
+    return {
+      activeUserCount: activeUsers.length,
+      popularPostCount: stats.postCount,
+      averageLikesPerUser: averageLikes
+    };
+  }
+  
+  console.log(analyze());
