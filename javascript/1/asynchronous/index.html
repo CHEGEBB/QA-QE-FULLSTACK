@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>📚 Book Explorer</h1>
+            <p class="subtitle">Discover your next favorite read</p>
+        </header>
+
+        <!-- Search and Filter Controls -->
+        <section class="controls">
+            <div class="search-bar">
+                <input type="text" placeholder="Search books...">
+                <span class="search-icon">🔍</span>
+            </div>
+            <div class="filters">
+                <select id="genre-filter">
+                    <option value="">All Genres</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Dystopian">Dystopian</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Historical Fiction">Historical Fiction</option>
+                    <option value="Epic Poetry">Epic Poetry</option>
+                </select>
+                <select id="year-filter">
+                    <option value="">All Years</option>
+                    <option value="pre-1900">Before 1900</option>
+                    <option value="1900-1950">1900-1950</option>
+                    <option value="post-1950">After 1950</option>
+                </select>
+                <select id="sort-by">
+                    <option value="title-asc">Title (A-Z)</option>
+                    <option value="title-desc">Title (Z-A)</option>
+                    <option value="year-asc">Year (Oldest)</option>
+                    <option value="year-desc">Year (Newest)</option>
+                    <option value="pages-asc">Pages (Fewest)</option>
+                    <option value="pages-desc">Pages (Most)</option>
+                </select>
+                <button id="apply-filters">Apply Filters</button>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-books">10</div>
+                    <div class="stat-label">Total Books</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-pages">426</div>
+                    <div class="stat-label">Average Pages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="oldest-book">800 BCE</div>
+                    <div class="stat-label">Oldest Book</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="genres-count">7</div>
+                    <div class="stat-label">Unique Genres</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div class="loading-container" id="loading-container" style="display: none;">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Books Grid -->
+        <div class="book-grid" id="books-container">
+            <!-- Example Book Card 1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="" alt="" class="image"/>
+                    <div class="book-category">Dystopian</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title"></h3>
+                    <p class="book-author">George Orwell</p>
+                    <div class="book-meta">
+                        <span id="year">1949</span>
+                        <span id="pages">328 pages</span>
+                    </div>
+                    <p class="book-description">A dystopian novel set in a totalitarian society ruled by the Party.</p>
+                    <p class="book-publisher">Secker & Warburg</p>
+                </div>
+            </div>
+
+        <!-- Modal -->
+        <div class="modal-overlay" id="book-modal">
+            <div class="modal-content">
+                <button class="close-modal" id="close-modal">✕</button>
+                <div class="modal-flex">
+                    <div class="modal-book-image">
+                        <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984 by George Orwell">
+                    </div>
+                    <div class="modal-book-details">
+                        <h2 class="modal-title">1984</h2>
+                        <p class="modal-author">By George Orwell</p>
+                        <div class="modal-meta">
+                            <div class="meta-item">
+                                <span class="meta-label">Published</span>
+                                <span class="meta-value">1949</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Genre</span>
+                                <span class="meta-value">Dystopian</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">Pages</span>
+                                <span class="meta-value">328</span>
+                            </div>
+                            <div class="meta-item">
+                                <span class="meta-label">ID</span>
+                                <span class="meta-value">#2</span>
+                            </div>
+                        </div>
+                        <p class="modal-description">A dystopian novel set in a totalitarian society ruled by the Party, which has total control over every aspect of people's lives.</p>
+                        <div class="modal-actions">
+                            <button class="primary-btn">Add to Reading List</button>
+                            <button class="secondary-btn">Share Book</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="book-publisher">
+                    <strong>Publisher:</strong> Secker & Warburg
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>Book Explorer — Async JavaScript Project</p>
+        </footer>
+        <script src="./script.js"></script>
+    </div>
+</body>
+</html>
