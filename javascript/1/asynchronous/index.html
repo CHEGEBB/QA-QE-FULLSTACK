@@ -8,19 +8,29 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 <body>
     <div class="container">
         <header>
+            <div class="cart-wrapper">
+                <div class="cart-cont" id="cart-button">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
             <h1>📚 Book Explorer</h1>
             <p class="subtitle">Discover your next favorite read</p>
+           
         </header>
 
         <!-- Search and Filter Controls -->
         <section class="controls">
             <div class="search-bar">
                 <input type="text" placeholder="Search books...">
-                <span class="search-icon">🔍</span>
+                <span class="search-icon">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
             </div>
             <div class="filters">
                 <select id="genre-filter">
@@ -95,6 +105,7 @@
                     </div>
                     <p class="book-description">A dystopian novel set in a totalitarian society ruled by the Party.</p>
                     <p class="book-publisher">Secker & Warburg</p>
+                    
                 </div>
             </div>
 
@@ -144,6 +155,61 @@
             <p>Book Explorer — Async JavaScript Project</p>
         </footer>
         <script src="./script.js"></script>
+    </div>
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h2 class="cart-title">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    Your Shopping Cart
+                </h2>
+                <button class="close-cart" id="close-cart">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            
+            <div class="cart-items">
+                <div class="cart-empty-message">
+                    Your cart is empty
+                </div>
+                
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-title">1984</h3>
+                        <p class="cart-item-author">George Orwell</p>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn">
+                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                </button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn btn2">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button class="remove-item">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total Items:</span>
+                    <span>1 book</span>
+                </div>
+                <button class="checkout-btn">
+                    Proceed to Checkout
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
     </div>
 </body>
 </html>
