@@ -398,12 +398,9 @@ document.addEventListener("DOMContentLoaded", function () {
           </div>
         </div>
       `;
-      
-      // Add to cart items container
       cartItemsContainer.appendChild(cartItem);
     });
     
-    // Add event listeners to the new cart item controls
     addCartItemEventListeners();
   }
   
@@ -465,7 +462,6 @@ document.addEventListener("DOMContentLoaded", function () {
   }
   
   function showNotification(message) {
-    // Create notification element
     const notification = document.createElement('div');
     notification.className = 'notification';
     notification.textContent = message;
