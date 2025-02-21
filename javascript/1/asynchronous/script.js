@@ -19,7 +19,6 @@ document.addEventListener("DOMContentLoaded", function () {
   // Add the total price element to cart footer
   cartFooter.insertBefore(cartTotalPrice, checkoutBtn);
   
-  // Global cart items array
   let cartItems = [];
   let allBooks = []; 
 
@@ -189,7 +188,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const bookId = document.createElement("p");
       bookId.className = 'id-book';
       bookId.textContent = result.id;
-      bookId.style.display = 'none'; // Hide the ID from view
+      bookId.style.display = 'none';
 
       const buyBook = document.createElement("button");
       buyBook.className = "buy-book";
