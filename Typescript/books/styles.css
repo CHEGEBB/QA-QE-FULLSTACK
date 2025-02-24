@@ -1,0 +1,781 @@
+/* Base Styles */
+:root {
+    --primary: #4a6fa5;
+    --secondary: #9c6644;
+    --accent: #45b29a;
+    --dark: #333;
+    --light: #f5f5f5;
+    --card-bg: rgba(255, 255, 255, 0.85);
+    --warning: #e27d60;
+    --classic: #e8a87c;
+    --fiction: #c38d9e;
+    --fantasy: #41b3a3;
+    --shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 2rem 1rem;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 700;
+    font-size: 2.5rem;
+    margin-bottom: 0.5rem;
+    color: var(--primary);
+}
+
+.subtitle {
+    color: #666;
+    margin-bottom: 1.5rem;
+}
+
+/* Controls Section */
+.controls {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.25rem;
+    margin-bottom: 2rem;
+    box-shadow: var(--shadow);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.search-bar {
+    flex: 1;
+    min-width: 250px;
+    position: relative;
+}
+
+.search-bar input {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.95rem;
+    color: var(--dark);
+}
+
+.search-bar input:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+}
+
+.search-icon {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    opacity: 0.6;
+}
+
+.filters {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+select {
+    padding: 0.75rem;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    background-color: #f5f7fa;
+    font-family: 'Inter', sans-serif;
+    color: var(--dark);
+    cursor: pointer;
+    min-width: 140px;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--primary);
+}
+.id-book{
+    display: none;
+}
+button {
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    border: none;
+    background-color: var(--primary);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: #3d5c8c;
+    transform: translateY(-1px);
+}
+
+button:active {
+    transform: translateY(0);
+}
+
+/* Stats Section */
+.stats-section {
+    margin-bottom: 2.5rem;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.stat-card {
+    background-color: white;
+    border-radius: 12px;
+    padding: 1.5rem;
+    text-align: center;
+    box-shadow: var(--shadow);
+}
+
+.stat-value {
+    font-size: 2rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+}
+
+.stat-label {
+    color: #666;
+    font-size: 0.9rem;
+}
+
+/* Book Grid */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+}
+
+.book-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: var(--shadow);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.book-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.book-image {
+    height: 200px;
+    position: relative;
+    overflow: hidden;
+}
+
+.book-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.book-card:hover .book-image img {
+    transform: scale(1.05);
+}
+
+.book-category {
+    position: absolute;
+    top: 0.75rem;
+    right: 0.75rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    background: var(--accent);
+    color: white;
+}
+
+.book-category.dystopian {
+    background-color: var(--warning);
+}
+
+.book-category.classic {
+    background-color: var(--classic);
+    color: #333;
+}
+
+.book-category.fiction {
+    background-color: var(--fiction);
+}
+
+.book-category.fantasy {
+    background-color: var(--fantasy);
+}
+
+.book-info {
+    padding: 1.25rem;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.book-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.4rem;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--dark);
+}
+
+.book-author {
+    color: #666;
+    margin-bottom: 0.75rem;
+    font-size: 0.95rem;
+}
+
+.book-meta {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.8rem;
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.book-description {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #555;
+    flex-grow: 1;
+}
+
+.book-publisher {
+    font-size: 0.8rem;
+    color: #888;
+    margin-top: auto;
+}
+
+/* Modal */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    width: 90%;
+    max-width: 800px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.2);
+    padding: 2rem;
+    position: relative;
+}
+
+.close-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: #f1f1f1;
+    border: none;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1rem;
+    padding: 0;
+    color: #666;
+}
+
+.modal-flex {
+    display: flex;
+    gap: 2rem;
+    margin-bottom: 1.5rem;
+}
+
+.modal-book-image {
+    flex: 0 0 250px;
+    height: 350px;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.modal-book-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.modal-book-details {
+    flex: 1;
+}
+
+.modal-title {
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: var(--primary);
+}
+
+.modal-author {
+    font-size: 1.1rem;
+    margin-bottom: 1rem;
+    color: #555;
+}
+
+.modal-meta {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.meta-item {
+    display: flex;
+    flex-direction: column;
+    background: #f5f7fa;
+    padding: 0.75rem;
+    border-radius: 8px;
+}
+
+.meta-label {
+    font-size: 0.8rem;
+    color: #666;
+    margin-bottom: 0.25rem;
+}
+
+.meta-value {
+    font-weight: 600;
+    color: var(--dark);
+}
+
+.modal-description {
+    line-height: 1.7;
+    margin-bottom: 2rem;
+    color: #444;
+}
+
+.modal-actions {
+    display: flex;
+    gap: 1rem;
+}
+
+.primary-btn {
+    background-color: var(--primary);
+}
+
+.secondary-btn {
+    background-color: #f1f1f1;
+    color: var(--dark);
+}
+
+.secondary-btn:hover {
+    background-color: #e5e5e5;
+}
+
+/* Loading Animation */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 3rem;
+}
+
+.loader {
+    width: 48px;
+    height: 48px;
+    border: 5px solid #ddd;
+    border-radius: 50%;
+    border-top-color: var(--primary);
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
+    
+    .controls {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .search-bar {
+        min-width: 100%;
+    }
+    
+    .filters {
+        justify-content: space-between;
+    }
+    
+    .modal-flex {
+        flex-direction: column;
+    }
+    
+    .modal-book-image {
+        height: 250px;
+        flex: 0 0 auto;
+    }
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 2rem 0;
+    color: #777;
+    font-size: 0.9rem;
+}
+/* Book Grid Container */
+.book-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    margin-bottom: 3rem;
+    width: 100%;
+    max-width: 1200px;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 0 1rem;
+}
+
+/* Book Card Styles */
+.book-card {
+    background-color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    width: 100%; /* Ensure cards take full width of their grid cell */
+}
+
+/* Make sure body properly contains the grid */
+body {
+    font-family: 'Inter', sans-serif;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e4ecf7 100%);
+    color: #333;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .book-grid {
+        grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+        gap: 1.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .book-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+}
+/* Cart Icon Positioning */
+.cart-wrapper {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 100;
+}
+
+.cart-cont {
+    background-color: white;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    position: relative;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.cart-cont:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+}
+
+.cart-cont i {
+    color: var(--primary);
+    font-size: 1.3rem;
+}
+
+.cart-count {
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--warning);
+    color: white;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+}
+
+/* Cart Modal */
+.cart-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+    z-index: 1000;
+}
+
+.cart-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.cart-modal {
+    position: fixed;
+    top: 0;
+    right: -400px;
+    width: 400px;
+    height: 100vh;
+    background: white;
+    box-shadow: -5px 0 15px rgba(0, 0, 0, 0.1);
+    z-index: 1001;
+    transition: right 0.3s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-modal.active {
+    right: 0;
+}
+
+.cart-header {
+    padding: 1.5rem;
+    border-bottom: 1px solid #eee;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.cart-title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--primary);
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.close-cart {
+    background: none;
+    border: none;
+    color: #666;
+    padding: 0.5rem;
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-cart:hover {
+    color: var(--warning);
+}
+
+.cart-items {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+}
+
+.cart-empty-message {
+    text-align: center;
+    color: #666;
+    padding: 2rem;
+    font-size: 1.1rem;
+}
+
+.cart-item {
+    display: flex;
+    padding: 1rem;
+    border-radius: 8px;
+    background: #f8f9fa;
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.cart-item-image {
+    width: 80px;
+    height: 120px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.cart-item-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.cart-item-title {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: var(--dark);
+}
+
+.cart-item-author {
+    color: #666;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.quantity-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 1rem;
+}
+
+.quantity-btn {
+    background: #333;
+    border: none;
+    width: 24px;
+    height: 24px;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.quantity-btn:hover {
+    background: #ddd;
+}
+
+.quantity {
+    font-weight: 600;
+    width: 24px;
+    text-align: center;
+}
+
+.remove-item {
+    color: var(--warning);
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 0.9rem;
+    margin-left: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.25rem;
+}
+
+.cart-footer {
+    padding: 1.5rem;
+    border-top: 1px solid #eee;
+    background: white;
+}
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+    font-weight: 600;
+}
+
+.checkout-btn {
+    width: 100%;
+    padding: 1rem;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    transition: background-color 0.2s;
+}
+
+.checkout-btn:hover {
+    background: #3d5c8c;
+}
+
+@media (max-width: 480px) {
+    .cart-modal {
+        width: 100%;
+        right: -100%;
+    }
+}
