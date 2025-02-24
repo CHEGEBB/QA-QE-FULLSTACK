@@ -16,7 +16,6 @@ document.addEventListener("DOMContentLoaded", function () {
   const checkoutBtn = document.querySelector(".checkout-btn");
   const cartFooter = document.querySelector(".cart-footer");
   
-  // Add the total price element to cart footer
   cartFooter.insertBefore(cartTotalPrice, checkoutBtn);
   
   let cartItems = [];
@@ -36,19 +35,16 @@ document.addEventListener("DOMContentLoaded", function () {
     }
   }
 
-  // Initialize the app
   fetchData().then((books) => {
     allBooks = books; 
     displayBooks(books);
     updateStats(books);
   });
   
-  // Add event listener for filter button
   applyFiltersBtn.addEventListener("click", function() {
     filterAndSortBooks();
   });
   
-  // Add event listener for search input
   searchInput.addEventListener("keyup", function(event) {
     if (event.key === "Enter") {
       filterAndSortBooks();
@@ -243,68 +239,6 @@ document.addEventListener("DOMContentLoaded", function () {
     // Count unique genres
     const uniqueGenres = new Set(books.map(book => book.genre));
     document.getElementById("genres-count").textContent = uniqueGenres.size;
-  }
-  
-  function showBookModal(book) {
-    const modal = document.getElementById("book-modal");
-    modal.style.display = "flex";
-    
-    // Populate modal content
-    const modalImg = modal.querySelector(".modal-book-image img");
-    modalImg.src = book.image;
-    modalImg.alt = book.title;
-    
-    modal.querySelector(".modal-title").textContent = book.title;
-    modal.querySelector(".modal-author").textContent = `By ${book.author}`;
-    
-    // Update meta info
-    const metaValues = modal.querySelectorAll(".meta-value");
-    metaValues[0].textContent = book.year;
-    metaValues[1].textContent = book.genre;
-    metaValues[2].textContent = book.pages;
-    metaValues[3].textContent = `#${book.id || '1'}`;
-    
-    // Add price to modal
-    if (modal.querySelector('.meta-item.price')) {
-      modal.querySelector('.meta-item.price .meta-value').textContent = `$${book.price.toFixed(2)}`;
-    } else {
-      const priceItem = document.createElement('div');
-      priceItem.className = 'meta-item price';
-      priceItem.innerHTML = `
-        <span class="meta-label">Price</span>
-        <span class="meta-value">$${book.price.toFixed(2)}</span>
-      `;
-      modal.querySelector('.modal-meta').appendChild(priceItem);
-    }
-    
-    modal.querySelector(".modal-description").textContent = book.description;
-    modal.querySelector(".book-publisher strong").textContent = `Publisher: ${book.publisher}`;
-    
-    // Add to cart button in modal
-    const addToCartBtn = modal.querySelector(".primary-btn");
-    addToCartBtn.textContent = `Add to Cart • $${book.price.toFixed(2)}`;
-    
-    // Remove previous event listeners
-    const newAddToCartBtn = addToCartBtn.cloneNode(true);
-    addToCartBtn.parentNode.replaceChild(newAddToCartBtn, addToCartBtn);
-    
-    // Add new event listener
-    newAddToCartBtn.addEventListener("click", function() {
-      addToCart(book.id, allBooks);
-    });
-    
-    // Close modal event
-    const closeModal = document.getElementById("close-modal");
-    closeModal.addEventListener("click", function() {
-      modal.style.display = "none";
-    });
-    
-    // Close when clicking outside
-    modal.addEventListener("click", function(e) {
-      if (e.target === modal) {
-        modal.style.display = "none";
-      }
-    });
   }
 
   // Cart functionality

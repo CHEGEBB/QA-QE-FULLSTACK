@@ -1,0 +1,20 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev": "tsc --watch",
+    "serve": "vite",
+    "build": "tsc",
+    "lint": "eslint.",
+    "format": "prettier --write.",
+    "test": "vitest",
+    "preview":"vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs"
+}
