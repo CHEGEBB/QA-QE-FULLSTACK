@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book Explorer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="cart-wrapper">
+                <div class="cart-cont" id="cart-button">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    <span class="cart-count">0</span>
+                </div>
+            </div>
+            <h1>📚 Book Explorer</h1>
+            <p class="subtitle">Discover your next favorite read</p>
+           
+        </header>
+
+        <!-- Search and Filter Controls -->
+        <section class="controls">
+            <div class="search-bar">
+                <input type="text" placeholder="Search books...">
+                <span class="search-icon">
+                    <i class="fa fa-search" aria-hidden="true"></i>
+                </span>
+            </div>
+            <div class="filters">
+                <select id="genre-filter">
+                    <option value="">All Genres</option>
+                    <option value="Fiction">Fiction</option>
+                    <option value="Dystopian">Dystopian</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Historical Fiction">Historical Fiction</option>
+                    <option value="Epic Poetry">Epic Poetry</option>
+                </select>
+                <select id="year-filter">
+                    <option value="">All Years</option>
+                    <option value="pre-1900">Before 1900</option>
+                    <option value="1900-1950">1900-1950</option>
+                    <option value="post-1950">After 1950</option>
+                </select>
+                <select id="sort-by">
+                    <option value="title-asc">Title (A-Z)</option>
+                    <option value="title-desc">Title (Z-A)</option>
+                    <option value="year-asc">Year (Oldest)</option>
+                    <option value="year-desc">Year (Newest)</option>
+                    <option value="pages-asc">Pages (Fewest)</option>
+                    <option value="pages-desc">Pages (Most)</option>
+                </select>
+                <button id="apply-filters">Apply Filters</button>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value" id="total-books">10</div>
+                    <div class="stat-label">Total Books</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="avg-pages">426</div>
+                    <div class="stat-label">Average Pages</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="oldest-book">800 BCE</div>
+                    <div class="stat-label">Oldest Book</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value" id="genres-count">7</div>
+                    <div class="stat-label">Unique Genres</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Loading State -->
+        <div class="loading-container" id="loading-container" style="display: none;">
+            <div class="loader"></div>
+        </div>
+
+        <!-- Books Grid -->
+        <div class="book-grid" id="books-container">
+            <!-- Example Book Card 1 -->
+            <div class="book-card">
+                <div class="book-image">
+                    <img src="" alt="" class="image"/>
+                    <div class="book-category">Dystopian</div>
+                </div>
+                <div class="book-info">
+                    <h3 class="book-title"></h3>
+                    <p class="book-author">George Orwell</p>
+                    <div class="book-meta">
+                        <span id="year">1949</span>
+                        <span id="pages">328 pages</span>
+                    </div>
+                    <p class="book-description">A dystopian novel set in a totalitarian society ruled by the Party.</p>
+                    <p class="book-publisher">Secker & Warburg</p>
+                    
+                </div>
+            </div>
+
+        <footer>
+            <p>Book Explorer — Async JavaScript Project</p>
+        </footer>
+        <script src="./dist/script.js"></script>
+    </div>
+    <div class="cart-overlay" id="cart-overlay">
+        <div class="cart-modal">
+            <div class="cart-header">
+                <h2 class="cart-title">
+                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+                    Your Shopping Cart
+                </h2>
+                <button class="close-cart" id="close-cart">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                </button>
+            </div>
+            
+            <div class="cart-items">
+                <div class="cart-empty-message">
+                    Your cart is empty
+                </div>
+                
+                <div class="cart-item">
+                    <div class="cart-item-image">
+                        <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984">
+                    </div>
+                    <div class="cart-item-details">
+                        <h3 class="cart-item-title">1984</h3>
+                        <p class="cart-item-author">George Orwell</p>
+                        <div class="cart-item-controls">
+                            <div class="quantity-controls">
+                                <button class="quantity-btn">
+                                    <i class="fa fa-minus" aria-hidden="true"></i>
+                                </button>
+                                <span class="quantity">1</span>
+                                <button class="quantity-btn btn2">
+                                    <i class="fa fa-plus" aria-hidden="true"></i>
+                                </button>
+                            </div>
+                            <button class="remove-item">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                                Remove
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cart-footer">
+                <div class="cart-total">
+                    <span>Total Items:</span>
+                    <span>1 book</span>
+                </div>
+                <button class="checkout-btn">
+                    Proceed to Checkout
+                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
