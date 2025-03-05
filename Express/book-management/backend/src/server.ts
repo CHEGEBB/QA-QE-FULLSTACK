@@ -9,23 +9,19 @@ dotenv.config();
 const app = express();
 const port = process.env.PORT || 5000;
 
-// Enable CORS for frontend on port 5173
 app.use(cors({
   origin: 'http://localhost:5173'
 }));
 
 const _dirname = path.resolve();
 
-// Read books data
 const bookData = readFileSync(
   path.join(_dirname, "src", "db", "data.json"),
   "utf-8"
 );
 
-// Parse the JSON and directly extract the Books array
 const books = JSON.parse(bookData).Books;
 
-// Main books endpoint with comprehensive filtering
 app.get('/api/books', (req: Request, res: Response) => {
   try {
     const { 
@@ -35,10 +31,8 @@ app.get('/api/books', (req: Request, res: Response) => {
       sortBy 
     } = req.query;
 
-    // Start with all books
     let filteredBooks = [...books];
 
-    // Search filter (across title, author, description)
     if (search) {
       const searchTerm = (search as string).toLowerCase().trim();
       filteredBooks = filteredBooks.filter(book => 
@@ -48,14 +42,12 @@ app.get('/api/books', (req: Request, res: Response) => {
       );
     }
 
-    // Genre filter
     if (genre) {
       filteredBooks = filteredBooks.filter(book => 
         book.genre.toLowerCase() === (genre as string).toLowerCase()
       );
     }
 
-    // Year Range filter
     if (yearRange) {
       switch(yearRange) {
         case 'pre-1900':
@@ -72,7 +64,6 @@ app.get('/api/books', (req: Request, res: Response) => {
       }
     }
 
-    // Sorting 
     if (sortBy) {
       switch(sortBy) {
         case 'title-asc':
@@ -96,7 +87,6 @@ app.get('/api/books', (req: Request, res: Response) => {
       }
     }
 
-    // Calculate additional stats for the frontend
     const stats = {
       totalBooks: filteredBooks.length,
       avgPages: filteredBooks.length 
@@ -119,7 +109,6 @@ app.get('/api/books', (req: Request, res: Response) => {
   }
 });
 
-// Default route
 app.get('/', (req: Request, res: Response) => {
   res.json(books);
 });
