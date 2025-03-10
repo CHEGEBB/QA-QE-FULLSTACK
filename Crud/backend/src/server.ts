@@ -31,10 +31,10 @@ async function fetchBooks() {
     books.filter((book: { title: string; author: string; year: number; description: string }) => {
         if(book.title && book.author && book.year && book.description){
             console.log(
-                chalk.green(`${book.title}`) + 
-                chalk.blue(' - ') + 
+                chalk.green(`< ${book.title} >`) + 
+                chalk.yellow(' - ') + 
                 chalk.yellow(`${book.author}`) + 
-                chalk.blue(' --- ') + 
+                chalk.magenta(' ------ ') + 
                 chalk.magenta(`${book.year}`) + 
                 chalk.blue(' -- ') + 
                 chalk.cyan(`[${book.description}]`)
