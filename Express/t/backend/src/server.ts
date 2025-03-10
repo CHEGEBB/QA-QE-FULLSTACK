@@ -94,7 +94,6 @@ app.get('/api/books', (req: Request, res: Response) => {
     const stats = {
       totalBooks: filteredBooks.length,
       avgPages: filteredBooks.length 
-      
         ? Math.round(filteredBooks.reduce((sum, book) => sum + parseInt(book.pages), 0) / filteredBooks.length)
         : 0,
       oldestBook: filteredBooks.length 

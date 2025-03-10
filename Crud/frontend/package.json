@@ -1,0 +1,26 @@
+{
+  "name": "project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node dist/index.js",
+    "dev:start":"json-server --watch data.json --port 3000",
+    "dev": "tsc --watch",
+    "serve": "vite",
+    "build": "tsc --outDir dist",
+    "lint": "eslint.",
+    "format": "prettier --write.",
+    "test": "vitest",
+    "preview": "vite preview"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "module",
+  "devDependencies": {
+    "nodemon": "^3.1.9",
+    "typescript": "^5.7.3",
+    "vite": "^6.1.1"
+  }
+}
