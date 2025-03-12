@@ -21,43 +21,53 @@
             </div>
             <h1>📚 Book Explorer</h1>
             <p class="subtitle">Discover your next favorite read</p>
-           
         </header>
 
         <!-- Search and Filter Controls -->
-        <section class="controls">
+        <section class="controls-container">
             <div class="search-bar">
                 <input type="text" placeholder="Search books...">
                 <span class="search-icon">
                     <i class="fa fa-search" aria-hidden="true"></i>
                 </span>
             </div>
-            <div class="filters">
-                <select id="genre-filter">
-                    <option value="">All Genres</option>
-                    <option value="Fiction">Fiction</option>
-                    <option value="Dystopian">Dystopian</option>
-                    <option value="Romance">Romance</option>
-                    <option value="Fantasy">Fantasy</option>
-                    <option value="Adventure">Adventure</option>
-                    <option value="Historical Fiction">Historical Fiction</option>
-                    <option value="Epic Poetry">Epic Poetry</option>
-                </select>
-                <select id="year-filter">
-                    <option value="">All Years</option>
-                    <option value="pre-1900">Before 1900</option>
-                    <option value="1900-1950">1900-1950</option>
-                    <option value="post-1950">After 1950</option>
-                </select>
-                <select id="sort-by">
-                    <option value="title-asc">Title (A-Z)</option>
-                    <option value="title-desc">Title (Z-A)</option>
-                    <option value="year-asc">Year (Oldest)</option>
-                    <option value="year-desc">Year (Newest)</option>
-                    <option value="pages-asc">Pages (Fewest)</option>
-                    <option value="pages-desc">Pages (Most)</option>
-                </select>
-                <button id="apply-filters">Apply Filters</button>
+            <div class="controls-row">
+                <div class="filters">
+                    <select id="genre-filter">
+                        <option value="">All Genres</option>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Dystopian">Dystopian</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Historical Fiction">Historical Fiction</option>
+                        <option value="Epic Poetry">Epic Poetry</option>
+                    </select>
+                    <select id="year-filter">
+                        <option value="">All Years</option>
+                        <option value="pre-1900">Before 1900</option>
+                        <option value="1900-1950">1900-1950</option>
+                        <option value="post-1950">After 1950</option>
+                    </select>
+                    <select id="sort-by">
+                        <option value="title-asc">Title (A-Z)</option>
+                        <option value="title-desc">Title (Z-A)</option>
+                        <option value="year-asc">Year (Oldest)</option>
+                        <option value="year-desc">Year (Newest)</option>
+                        <option value="pages-asc">Pages (Fewest)</option>
+                        <option value="pages-desc">Pages (Most)</option>
+                    </select>
+                </div>
+                <div class="controls-actions">
+                    <button id="apply-filters" class="filter-btn">
+                        <i class="fa fa-filter" aria-hidden="true"></i>
+                        Apply Filters
+                    </button>
+                    <button id="add-book-btn" class="add-book-btn">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add New Book
+                    </button>
+                </div>
             </div>
         </section>
 
@@ -93,11 +103,21 @@
             <!-- Example Book Card 1 -->
             <div class="book-card">
                 <div class="book-image">
-                    <img src="" alt="" class="image"/>
+                    <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984" class="image"/>
                     <div class="book-category">Dystopian</div>
+                    <div class="book-overlay">
+                        <div class="book-actions">
+                            <button class="action-btn edit-btn" data-id="1">
+                                <i class="fa fa-pencil" aria-hidden="true"></i>
+                            </button>
+                            <button class="action-btn delete-btn" data-id="1">
+                                <i class="fa fa-trash" aria-hidden="true"></i>
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="book-info">
-                    <h3 class="book-title"></h3>
+                    <h3 class="book-title">1984</h3>
                     <p class="book-author">George Orwell</p>
                     <div class="book-meta">
                         <span id="year">1949</span>
@@ -105,15 +125,16 @@
                     </div>
                     <p class="book-description">A dystopian novel set in a totalitarian society ruled by the Party.</p>
                     <p class="book-publisher">Secker & Warburg</p>
-                    
                 </div>
             </div>
+        </div>
 
         <footer>
             <p>Book Explorer — Async JavaScript Project</p>
         </footer>
-        <script src="./dist/script.js"></script>
     </div>
+
+    <!-- Shopping Cart Overlay -->
     <div class="cart-overlay" id="cart-overlay">
         <div class="cart-modal">
             <div class="cart-header">
@@ -169,5 +190,165 @@
             </div>
         </div>
     </div>
+
+    <!-- Edit Book Modal -->
+    <div class="modal-overlay" id="edit-modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" id="close-edit-modal">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h2 class="modal-title">Edit Book</h2>
+            
+            <form id="edit-book-form">
+                <input type="hidden" id="edit-book-id">
+                
+                <div class="form-group">
+                    <label for="edit-title">Title</label>
+                    <input type="text" id="edit-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-author">Author</label>
+                    <input type="text" id="edit-author" name="author" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="edit-year">Year</label>
+                        <input type="number" id="edit-year" name="year" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="edit-pages">Pages</label>
+                        <input type="number" id="edit-pages" name="pages" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-genre">Genre</label>
+                    <select id="edit-genre" name="genre" required>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Dystopian">Dystopian</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Historical Fiction">Historical Fiction</option>
+                        <option value="Epic Poetry">Epic Poetry</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-publisher">Publisher</label>
+                    <input type="text" id="edit-publisher" name="publisher" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-image">Image URL</label>
+                    <input type="text" id="edit-image" name="image" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">
+                        <i class="fa fa-save" aria-hidden="true"></i>
+                        Save Changes
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Add New Book Modal -->
+    <div class="modal-overlay" id="add-modal-overlay">
+        <div class="modal-content">
+            <button class="close-modal" id="close-add-modal">
+                <i class="fa fa-times" aria-hidden="true"></i>
+            </button>
+            <h2 class="modal-title">Add New Book</h2>
+            
+            <form id="add-book-form">
+                <div class="form-group">
+                    <label for="add-title">Title</label>
+                    <input type="text" id="add-title" name="title" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-author">Author</label>
+                    <input type="text" id="add-author" name="author" required>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="add-year">Year</label>
+                        <input type="number" id="add-year" name="year" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="add-pages">Pages</label>
+                        <input type="number" id="add-pages" name="pages" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-genre">Genre</label>
+                    <select id="add-genre" name="genre" required>
+                        <option value="Fiction">Fiction</option>
+                        <option value="Dystopian">Dystopian</option>
+                        <option value="Romance">Romance</option>
+                        <option value="Fantasy">Fantasy</option>
+                        <option value="Adventure">Adventure</option>
+                        <option value="Historical Fiction">Historical Fiction</option>
+                        <option value="Epic Poetry">Epic Poetry</option>
+                    </select>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-description">Description</label>
+                    <textarea id="add-description" name="description" rows="4" required></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-publisher">Publisher</label>
+                    <input type="text" id="add-publisher" name="publisher" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="add-image">Image URL</label>
+                    <input type="text" id="add-image" name="image" required>
+                </div>
+                
+                <div class="form-actions">
+                    <button type="submit" class="primary-btn">
+                        <i class="fa fa-plus" aria-hidden="true"></i>
+                        Add Book
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="delete-modal-overlay">
+        <div class="modal-content delete-modal">
+            <h2 class="modal-title">Confirm Deletion</h2>
+            <p class="delete-message">Are you sure you want to delete this book? This action cannot be undone.</p>
+            
+            <div class="delete-actions">
+                <button id="cancel-delete" class="secondary-btn">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                    Cancel
+                </button>
+                <button id="confirm-delete" class="warning-btn">
+                    <i class="fa fa-trash" aria-hidden="true"></i>
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="./src/script.ts"></script>
 </body>
 </html>

@@ -25,10 +25,22 @@ document.addEventListener("DOMContentLoaded", function () {
     cartTotalPrice.innerHTML = "<span>Total Price:</span><span>$0.00</span>";
     const checkoutBtn = document.querySelector(".checkout-btn");
     const cartFooter = document.querySelector(".cart-footer");
+    const addBookBtn = document.getElementById("add-book-btn");
+    const addModalOverlay = document.getElementById("add-modal-overlay");
+    const closeAddModal = document.getElementById("close-add-modal");
+    const addBookForm = document.getElementById("add-book-form");
+    const editModalOverlay = document.getElementById("edit-modal-overlay");
+    const closeEditModal = document.getElementById("close-edit-modal");
+    const editBookForm = document.getElementById("edit-book-form");
+    const deleteModalOverlay = document.getElementById("delete-modal-overlay");
+    const cancelDeleteBtn = document.getElementById("cancel-delete");
+    const confirmDeleteBtn = document.getElementById("confirm-delete");
+    let currentBookIdToDelete = null;
     if (cartFooter) {
         cartFooter.insertBefore(cartTotalPrice, checkoutBtn);
     }
     let cartItems = [];
+    let allBooks = [];
     function fetchBooks() {
         return __awaiter(this, arguments, void 0, function* (params = {}) {
             try {
@@ -39,6 +51,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 const url = `http://localhost:5000/api/books${queryParams ? `?${queryParams}` : ''}`;
                 const response = yield fetch(url);
                 const data = yield response.json();
+                allBooks = data;
                 if (loadingContainer) {
                     loadingContainer.style.display = "none";
                 }
@@ -109,8 +122,29 @@ document.addEventListener("DOMContentLoaded", function () {
             const bookCategory = document.createElement("div");
             bookCategory.className = "book-category";
             bookCategory.textContent = result.genre;
+            const bookActions = document.createElement("div");
+            bookActions.className = "book-actions";
+            const editBtn = document.createElement("button");
+            editBtn.className = "action-btn edit-btn";
+            editBtn.setAttribute("data-id", result.id);
+            editBtn.innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i>';
+            editBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openEditModal(result);
+            });
+            const deleteBtn = document.createElement("button");
+            deleteBtn.className = "action-btn delete-btn";
+            deleteBtn.setAttribute("data-id", result.id);
+            deleteBtn.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+            deleteBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                openDeleteModal(result.id);
+            });
+            bookActions.appendChild(editBtn);
+            bookActions.appendChild(deleteBtn);
             bookImage.appendChild(image);
             bookImage.appendChild(bookCategory);
+            bookImage.appendChild(bookActions);
             const bookInfo = document.createElement("div");
             bookInfo.className = "book-info";
             const bookTitle = document.createElement("h3");
@@ -358,7 +392,7 @@ document.addEventListener("DOMContentLoaded", function () {
             setTimeout(() => {
                 document.body.removeChild(notification);
             }, 300);
-        });
+        }, 3000);
     }
     function showBookModal(result) {
         const modal = document.createElement('div');
@@ -423,6 +457,246 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    // CRUD Functionality
+    // Add Book Modal
+    if (addBookBtn && addModalOverlay) {
+        addBookBtn.addEventListener('click', () => {
+            openAddModal();
+        });
+    }
+    function openAddModal() {
+        if (addModalOverlay) {
+            addModalOverlay.classList.add('active');
+            // Reset the form
+            if (addBookForm) {
+                addBookForm.reset();
+            }
+        }
+    }
+    if (closeAddModal && addModalOverlay) {
+        closeAddModal.addEventListener('click', () => {
+            addModalOverlay.classList.remove('active');
+        });
+        addModalOverlay.addEventListener('click', (e) => {
+            if (e.target === addModalOverlay) {
+                addModalOverlay.classList.remove('active');
+            }
+        });
+    }
+    // Edit Book Modal
+    function openEditModal(book) {
+        if (editModalOverlay) {
+            editModalOverlay.classList.add('active');
+            const editBookId = document.getElementById('edit-book-id');
+            const editTitle = document.getElementById('edit-title');
+            const editAuthor = document.getElementById('edit-author');
+            const editYear = document.getElementById('edit-year');
+            const editPages = document.getElementById('edit-pages');
+            const editGenre = document.getElementById('edit-genre');
+            const editDescription = document.getElementById('edit-description');
+            const editPublisher = document.getElementById('edit-publisher');
+            const editImage = document.getElementById('edit-image');
+            if (editBookId)
+                editBookId.value = book.id;
+            if (editTitle)
+                editTitle.value = book.title;
+            if (editAuthor)
+                editAuthor.value = book.author;
+            if (editYear)
+                editYear.value = book.year;
+            if (editPages)
+                editPages.value = book.pages;
+            if (editGenre)
+                editGenre.value = book.genre;
+            if (editDescription)
+                editDescription.value = book.description;
+            if (editPublisher)
+                editPublisher.value = book.publisher;
+            if (editImage)
+                editImage.value = book.image;
+        }
+    }
+    if (closeEditModal && editModalOverlay) {
+        closeEditModal.addEventListener('click', () => {
+            editModalOverlay.classList.remove('active');
+        });
+        editModalOverlay.addEventListener('click', (e) => {
+            if (e.target === editModalOverlay) {
+                editModalOverlay.classList.remove('active');
+            }
+        });
+    }
+    // Delete Confirmation Modal
+    function openDeleteModal(bookId) {
+        if (deleteModalOverlay) {
+            deleteModalOverlay.classList.add('active');
+            currentBookIdToDelete = bookId;
+        }
+    }
+    if (cancelDeleteBtn && deleteModalOverlay) {
+        cancelDeleteBtn.addEventListener('click', () => {
+            deleteModalOverlay.classList.remove('active');
+            currentBookIdToDelete = null;
+        });
+    }
+    if (deleteModalOverlay) {
+        deleteModalOverlay.addEventListener('click', (e) => {
+            if (e.target === deleteModalOverlay) {
+                deleteModalOverlay.classList.remove('active');
+                currentBookIdToDelete = null;
+            }
+        });
+    }
+    // Form Submissions
+    if (addBookForm) {
+        addBookForm.addEventListener('submit', (e) => __awaiter(this, void 0, void 0, function* () {
+            e.preventDefault();
+            const formData = new FormData(addBookForm);
+            const bookData = {};
+            formData.forEach((value, key) => {
+                bookData[key] = value;
+            });
+            // Add price field (random between $9.99 and $29.99)
+            const price = (Math.random() * 20 + 9.99).toFixed(2);
+            bookData['price'] = price;
+            try {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "flex";
+                }
+                const response = yield fetch('http://localhost:5000/api/books', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookData),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to add book');
+                }
+                // Close modal and refresh books
+                if (addModalOverlay) {
+                    addModalOverlay.classList.remove('active');
+                }
+                // Refresh book list
+                fetchBooks().then(({ books, stats }) => {
+                    displayBooks(books);
+                    updateStats(stats);
+                });
+                showNotification('Book added successfully!');
+            }
+            catch (error) {
+                console.error("Error adding book:", error);
+                showNotification('Failed to add book. Please try again.');
+            }
+            finally {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "none";
+                }
+            }
+        }));
+    }
+    if (editBookForm) {
+        editBookForm.addEventListener('submit', (e) => __awaiter(this, void 0, void 0, function* () {
+            e.preventDefault();
+            const formData = new FormData(editBookForm);
+            const bookData = {};
+            const bookId = document.getElementById('edit-book-id').value;
+            formData.forEach((value, key) => {
+                if (key !== 'id') {
+                    bookData[key] = value;
+                }
+            });
+            try {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "flex";
+                }
+                const response = yield fetch(`http://localhost:5000/api/books/${bookId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(bookData),
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to update book');
+                }
+                // Close modal and refresh books
+                if (editModalOverlay) {
+                    editModalOverlay.classList.remove('active');
+                }
+                // Refresh book list
+                fetchBooks().then(({ books, stats }) => {
+                    displayBooks(books);
+                    updateStats(stats);
+                });
+                showNotification('Book updated successfully!');
+            }
+            catch (error) {
+                console.error("Error updating book:", error);
+                showNotification('Failed to update book. Please try again.');
+            }
+            finally {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "none";
+                }
+            }
+        }));
+    }
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
+            if (!currentBookIdToDelete)
+                return;
+            try {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "flex";
+                }
+                const response = yield fetch(`http://localhost:5000/api/books/${currentBookIdToDelete}`, {
+                    method: 'DELETE',
+                });
+                if (!response.ok) {
+                    throw new Error('Failed to delete book');
+                }
+                // Close modal
+                if (deleteModalOverlay) {
+                    deleteModalOverlay.classList.remove('active');
+                }
+                // Remove from cart if present
+                cartItems = cartItems.filter(item => item.id !== currentBookIdToDelete);
+                updateCartUI();
+                // Refresh book list
+                fetchBooks().then(({ books, stats }) => {
+                    displayBooks(books);
+                    updateStats(stats);
+                });
+                showNotification('Book deleted successfully!');
+            }
+            catch (error) {
+                console.error("Error deleting book:", error);
+                showNotification('Failed to delete book. Please try again.');
+            }
+            finally {
+                if (loadingContainer) {
+                    loadingContainer.style.display = "none";
+                }
+                currentBookIdToDelete = null;
+            }
+        }));
+    }
+    // Global ESC key handler for all modals
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+            if (addModalOverlay && addModalOverlay.classList.contains('active')) {
+                addModalOverlay.classList.remove('active');
+            }
+            if (editModalOverlay && editModalOverlay.classList.contains('active')) {
+                editModalOverlay.classList.remove('active');
+            }
+            if (deleteModalOverlay && deleteModalOverlay.classList.contains('active')) {
+                deleteModalOverlay.classList.remove('active');
+                currentBookIdToDelete = null;
+            }
+        }
+    });
     updateCartUI();
 });
 //# sourceMappingURL=script.js.map
