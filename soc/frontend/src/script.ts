@@ -1059,8 +1059,8 @@ function displayUserInfo() {
       // Display username and role
       usernameElement.innerHTML = `
            <div style="display: flex; flex-direction: column;">
-        <span style="color: #0066cc; font-weight: bold;">${user.name}</span>
-        <span style="color: #6c757d; font-size: 0.9em;">${roleName}</span>
+        <span style="color: #fff; font-weight: bold;">${user.name}</span>
+        <span style="color: #38bdf8; font-size: 0.9em;">${roleName}</span>
     </div>
       `;
   } catch (e) {

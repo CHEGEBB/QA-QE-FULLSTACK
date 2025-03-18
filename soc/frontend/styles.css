@@ -30,6 +30,8 @@ body {
 .container {
     max-width: 1200px;
     margin: 0 auto;
+    margin-top: 150px;
+
 }
 
 header {
@@ -200,6 +202,7 @@ button:active {
 .book-image {
     height: 200px;
     position: relative;
+    z-index: 1;
     overflow: hidden;
 }
 
@@ -1031,14 +1034,33 @@ body {
 /* Header Styles - Fixed with proper spacing */
 header {
     display: flex;
+    background:url("./bg.jpg");
+    background-size: cover;
+    background-repeat: no-repeat;
     justify-content: space-between;
     align-items: center;
     margin-bottom: 2rem;
     width: 100%;
-    padding: 1rem 2rem;
-    position: relative;
+    padding: 20px;
+    position:fixed;
+    z-index: 30;
+    top: 0;
+    left: 0;
 }
-
+header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+    z-index: 100;
+}
+.header-content, .user-profile, .cart-wrapper {
+    position: relative;
+    z-index: 200;
+}
 /* Left section - User profile */
 .user-profile {
     flex: 1;
@@ -1057,12 +1079,12 @@ header {
     height: 80px;
     border-radius: 50%;
     object-fit: cover;
-    border: 2px solid var(--primary);
+    border: 4px solid #ccc;
 }
 
 .username {
     font-weight: 600;
-    color: var(--dark);
+    color: #fff;
     font-size: 0.9rem;
 }
 
@@ -1076,13 +1098,15 @@ header {
     font-weight: 700;
     font-size: 2.5rem;
     margin-bottom: 0.5rem;
-    color: var(--primary);
+    color: #fff;
+
 }
 
 .header-content .subtitle {
-    color: #666;
+    color: #ccc;
     font-weight: 600;
     margin-bottom: 0;
+    margin-left: 20px;
 }
 
 /* Right section - Cart */
@@ -1095,8 +1119,9 @@ header {
 .cart-cont {
     background-color: white;
     border-radius: 50%;
-    width: 50px;
-    height: 50px;
+    border: 4px solid  #ccc;
+    width: 60px;
+    height: 60px;
     display: flex;
     justify-content: center;
     align-items: center;
