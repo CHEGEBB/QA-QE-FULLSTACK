@@ -1022,7 +1022,59 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   }
+// Function to display user info in the profile section
+function displayUserInfo() {
+  const userString = localStorage.getItem('user');
+  const usernameElement = document.getElementById('username');
+  
+  if (!userString || !usernameElement) return;
+  
+  try {
+      const user = JSON.parse(userString);
+      
+      const userAvatar = document.querySelector('.logo-profile img') as HTMLImageElement;
+      if (userAvatar && !userAvatar.src) {
+        // Generate random number for the user image
+        const randomNum = Math.floor(Math.random() * 100);
+        // Randomly choose between men and women photos
+        const gender = Math.random() > 0.5 ? 'men' : 'women';
+        userAvatar.src = `https://randomuser.me/api/portraits/${gender}/${randomNum}.jpg`;
+        userAvatar.alt = user.name;
+    }
+      
+      // Get role name based on role_id
+      let roleName = "User";
+      switch (user.role_id) {
+          case 1:
+              roleName = "Administrator";
+              break;
+          case 2:
+              roleName = "Librarian";
+              break;
+          case 3:
+              roleName = "Borrower";
+              break;
+      }
+      
+      // Display username and role
+      usernameElement.innerHTML = `
+           <div style="display: flex; flex-direction: column;">
+        <span style="color: #0066cc; font-weight: bold;">${user.name}</span>
+        <span style="color: #6c757d; font-size: 0.9em;">${roleName}</span>
+    </div>
+      `;
+  } catch (e) {
+      console.error("Error parsing user data:", e);
+      usernameElement.textContent = "Guest";
+  }
+}
 
+// If you want to update this when user data changes:
+window.addEventListener('storage', function(event) {
+  if (event.key === 'user') {
+      displayUserInfo();
+  }
+});
   // Logout functionality
   const logoutBtn = document.getElementById('logout-button');
   if (logoutBtn) {
@@ -1051,6 +1103,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   });
+  displayUserInfo();
 
   // Initialize the app
   function init() {
@@ -1079,6 +1132,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     }
   }
+  
 
   // Run the initialization
   init();
