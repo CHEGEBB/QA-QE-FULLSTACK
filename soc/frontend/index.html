@@ -3,352 +3,166 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Book Explorer</title>
+    <title>Book Explorer - Authentication</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Montserrat:wght@500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <div class="cart-wrapper">
-                <div class="cart-cont" id="cart-button">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    <span class="cart-count">0</span>
+    <div class="auth-container">
+        <div class="auth-card">
+            <!-- Left side with book illustration and facts -->
+            <div class="book-facts">
+                <div class="logo-small">
+                    <i class="fa-solid fa-book-open-reader"></i>
+                    <span>Book Explorer</span>
+                </div>
+                <div class="book-illustration">
+                    <img src="./book.jpg" alt="Books Illustration">
+                </div>
+                <div class="facts-carousel">
+                    <div class="fact active">
+                        <h3>Did you know?</h3>
+                        <p>The world's oldest library still in existence is the Al-Qarawiyyin Library in Fez, Morocco, founded in 859 AD.</p>
+                    </div>
+                    <div class="fact">
+                        <h3>Book Fact</h3>
+                        <p>The longest novel ever published is "À la recherche du temps perdu" by Marcel Proust with 1.2 million words.</p>
+                    </div>
+                    <div class="fact">
+                        <h3>Library Fact</h3>
+                        <p>The Library of Congress is the largest library in the world with more than 170 million items.</p>
+                    </div>
+                </div>
+                <div class="fact-dots">
+                    <span class="dot active"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
                 </div>
             </div>
-            <h1>📚 Book Explorer</h1>
-            <p class="subtitle">Discover your next favorite read</p>
-        </header>
 
-        <!-- Search and Filter Controls -->
-        <section class="controls-container">
-            <div class="search-bar">
-                <input type="text" placeholder="Search books...">
-                <span class="search-icon">
-                    <i class="fa fa-search" aria-hidden="true"></i>
-                </span>
-            </div>
-            <div class="controls-row">
-                <div class="filters">
-                    <select id="genre-filter">
-                        <option value="">All Genres</option>
-                        <option value="Fiction">Fiction</option>
-                        <option value="Dystopian">Dystopian</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Fantasy">Fantasy</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Historical Fiction">Historical Fiction</option>
-                        <option value="Epic Poetry">Epic Poetry</option>
-                    </select>
-                    <select id="year-filter">
-                        <option value="">All Years</option>
-                        <option value="pre-1900">Before 1900</option>
-                        <option value="1900-1950">1900-1950</option>
-                        <option value="post-1950">After 1950</option>
-                    </select>
-                    <select id="sort-by">
-                        <option value="title-asc">Title (A-Z)</option>
-                        <option value="title-desc">Title (Z-A)</option>
-                        <option value="year-asc">Year (Oldest)</option>
-                        <option value="year-desc">Year (Newest)</option>
-                        <option value="pages-asc">Pages (Fewest)</option>
-                        <option value="pages-desc">Pages (Most)</option>
-                    </select>
+            <!-- Right side with authentication forms -->
+            <div class="form-container">
+                <div class="auth-header">
+                    <h1>Welcome to Book Explorer</h1>
+                    <p class="auth-subtitle">Your digital library management system</p>
                 </div>
-                <div class="controls-actions">
-                    <button id="apply-filters" class="filter-btn">
-                        <i class="fa fa-filter" aria-hidden="true"></i>
-                        Apply Filters
-                    </button>
-                    <button id="add-book-btn" class="add-book-btn">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        Add New Book
-                    </button>
-                </div>
-            </div>
-        </section>
 
-        <!-- Stats Section -->
-        <section class="stats-section">
-            <div class="stats-grid">
-                <div class="stat-card">
-                    <div class="stat-value" id="total-books">10</div>
-                    <div class="stat-label">Total Books</div>
+                <div class="auth-tabs">
+                    <button class="auth-tab active" data-tab="login">Login</button>
+                    <button class="auth-tab" data-tab="signup">Sign Up</button>
                 </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="avg-pages">426</div>
-                    <div class="stat-label">Average Pages</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="oldest-book">800 BCE</div>
-                    <div class="stat-label">Oldest Book</div>
-                </div>
-                <div class="stat-card">
-                    <div class="stat-value" id="genres-count">7</div>
-                    <div class="stat-label">Unique Genres</div>
-                </div>
-            </div>
-        </section>
 
-        <!-- Loading State -->
-        <div class="loading-container" id="loading-container" style="display: none;">
-            <div class="loader"></div>
-        </div>
-
-        <!-- Books Grid -->
-        <div class="book-grid" id="books-container">
-            <!-- Example Book Card 1 -->
-            <div class="book-card">
-                <div class="book-image">
-                    <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984" class="image"/>
-                    <div class="book-category">Dystopian</div>
-                    <div class="book-overlay">
-                        <div class="book-actions">
-                            <button class="action-btn edit-btn" data-id="1">
-                                <i class="fa fa-pencil" aria-hidden="true"></i>
-                            </button>
-                            <button class="action-btn delete-btn" data-id="1">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
+                <!-- Login Form -->
+                <div class="auth-form login-form active" id="login-form">
+                    <div class="role-selector" id="login-role-selector">
+                        <div class="role-option active" data-role="borrower">
+                            <div class="role-icon"><i class="fa-solid fa-user"></i></div>
+                            <div class="role-title">Borrower</div>
+                        </div>
+                        <div class="role-option" data-role="librarian">
+                            <div class="role-icon"><i class="fa-solid fa-book"></i></div>
+                            <div class="role-title">Librarian</div>
+                        </div>
+                        <div class="role-option" data-role="admin">
+                            <div class="role-icon"><i class="fa-solid fa-shield"></i></div>
+                            <div class="role-title">Admin</div>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="login-email" placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="login-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="login-password" placeholder="Enter your password">
+                            <button type="button" class="password-toggle">
+                                <i class="fa-solid fa-eye"></i>
                             </button>
                         </div>
                     </div>
-                </div>
-                <div class="book-info">
-                    <h3 class="book-title">1984</h3>
-                    <p class="book-author">George Orwell</p>
-                    <div class="book-meta">
-                        <span id="year">1949</span>
-                        <span id="pages">328 pages</span>
+                    
+                    <div class="form-options">
+                        <div class="remember-me">
+                            <input type="checkbox" id="remember-me">
+                            <label for="remember-me">Remember me</label>
+                        </div>
+                        <a href="#" class="forgot-password">Forgot password?</a>
                     </div>
-                    <p class="book-description">A dystopian novel set in a totalitarian society ruled by the Party.</p>
-                    <p class="book-publisher">Secker & Warburg</p>
+                    
+                    <button type="submit" class="auth-button login-button">
+                        <i class="fa-solid fa-sign-in-alt"></i>
+                        Log In
+                    </button>
                 </div>
-            </div>
-        </div>
 
-        <footer>
-            <p>Book Explorer — Async JavaScript Project</p>
-        </footer>
-    </div>
-
-    <!-- Shopping Cart Overlay -->
-    <div class="cart-overlay" id="cart-overlay">
-        <div class="cart-modal">
-            <div class="cart-header">
-                <h2 class="cart-title">
-                    <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    Your Shopping Cart
-                </h2>
-                <button class="close-cart" id="close-cart">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                </button>
-            </div>
-            
-            <div class="cart-items">
-                <div class="cart-empty-message">
-                    Your cart is empty
-                </div>
-                
-                <div class="cart-item">
-                    <div class="cart-item-image">
-                        <img src="https://m.media-amazon.com/images/I/71kxa1-0zfL.jpg" alt="1984">
+                <!-- Sign Up Form -->
+                <div class="auth-form signup-form" id="signup-form">
+                    <div class="signup-info">
+                        <i class="fa-solid fa-info-circle"></i>
+                        <p>Create a borrower account to access our digital library</p>
                     </div>
-                    <div class="cart-item-details">
-                        <h3 class="cart-item-title">1984</h3>
-                        <p class="cart-item-author">George Orwell</p>
-                        <div class="cart-item-controls">
-                            <div class="quantity-controls">
-                                <button class="quantity-btn">
-                                    <i class="fa fa-minus" aria-hidden="true"></i>
-                                </button>
-                                <span class="quantity">1</span>
-                                <button class="quantity-btn btn2">
-                                    <i class="fa fa-plus" aria-hidden="true"></i>
-                                </button>
+                    
+                    <div class="form-group">
+                        <label for="signup-name">Name</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="signup-name" placeholder="Enter your name">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-email">Email</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-envelope"></i>
+                            <input type="email" id="signup-email" placeholder="Enter your email">
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="signup-password">Password</label>
+                        <div class="input-with-icon">
+                            <i class="fa-solid fa-lock"></i>
+                            <input type="password" id="signup-password" placeholder="Create a password">
+                            <button type="button" class="password-toggle">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="password-strength">
+                            <div class="strength-meter">
+                                <div class="strength-bar"></div>
                             </div>
-                            <button class="remove-item">
-                                <i class="fa fa-trash" aria-hidden="true"></i>
-                                Remove
-                            </button>
+                            <span class="strength-text">Password strength</span>
                         </div>
                     </div>
-                </div>
-            </div>
-            
-            <div class="cart-footer">
-                <div class="cart-total">
-                    <span>Total Items:</span>
-                    <span>1 book</span>
-                </div>
-                <button class="checkout-btn">
-                    Proceed to Checkout
-                    <i class="fa fa-arrow-right" aria-hidden="true"></i>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Edit Book Modal -->
-    <div class="modal-overlay" id="edit-modal-overlay">
-        <div class="modal-content">
-            <button class="close-modal" id="close-edit-modal">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </button>
-            <h2 class="modal-title">Edit Book</h2>
-            
-            <form id="edit-book-form">
-                <input type="hidden" id="edit-book-id">
-                
-                <div class="form-group">
-                    <label for="edit-title">Title</label>
-                    <input type="text" id="edit-title" name="title" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-author">Author</label>
-                    <input type="text" id="edit-author" name="author" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="edit-year">Year</label>
-                        <input type="number" id="edit-year" name="year" required>
+                    
+                    <div class="terms-checkbox">
+                        <input type="checkbox" id="terms">
+                        <label for="terms">I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a></label>
                     </div>
                     
-                    <div class="form-group">
-                        <label for="edit-pages">Pages</label>
-                        <input type="number" id="edit-pages" name="pages" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-genre">Genre</label>
-                    <select id="edit-genre" name="genre" required>
-                        <option value="Fiction">Fiction</option>
-                        <option value="Dystopian">Dystopian</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Fantasy">Fantasy</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Historical Fiction">Historical Fiction</option>
-                        <option value="Epic Poetry">Epic Poetry</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-description">Description</label>
-                    <textarea id="edit-description" name="description" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-publisher">Publisher</label>
-                    <input type="text" id="edit-publisher" name="publisher" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-image">Image URL</label>
-                    <input type="text" id="edit-image" name="image" required>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" cla,ss="primary-btn">
-                        <i class="fa fa-save" aria-hidden="true"></i>
-                        Save Changes
+                    <button type="submit" class="auth-button signup-button">
+                        <i class="fa-solid fa-user-plus"></i>
+                        Create Account
                     </button>
                 </div>
-            </form>
-        </div>
-    </div>
 
-    <!-- Add New Book Modal -->
-    <div class="modal-overlay" id="add-modal-overlay">
-        <div class="modal-content">
-            <button class="close-modal" id="close-add-modal">
-                <i class="fa fa-times" aria-hidden="true"></i>
-            </button>
-            <h2 class="modal-title">Add New Book</h2>
-            
-            <form id="add-book-form">
-                <div class="form-group">
-                    <label for="add-title">Title</label>
-                    <input type="text" id="add-title" name="title" required>
+                <div class="auth-footer">
+                    <p>© 2025 Book Explorer. All rights reserved.</p>
                 </div>
-                
-                <div class="form-group">
-                    <label for="add-author">Author</label>
-                    <input type="text" id="add-author" name="author" required>
-                </div>
-                
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="add-year">Year</label>
-                        <input type="number" id="add-year" name="year" required>
-                    </div>
-                    
-                    <div class="form-group">
-                        <label for="add-pages">Pages</label>
-                        <input type="number" id="add-pages" name="pages" required>
-                    </div>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add-genre">Genre</label>
-                    <select id="add-genre" name="genre" required>
-                        <option value="Fiction">Fiction</option>
-                        <option value="Dystopian">Dystopian</option>
-                        <option value="Romance">Romance</option>
-                        <option value="Fantasy">Fantasy</option>
-                        <option value="Adventure">Adventure</option>
-                        <option value="Historical Fiction">Historical Fiction</option>
-                        <option value="Epic Poetry">Epic Poetry</option>
-                    </select>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add-description">Description</label>
-                    <textarea id="add-description" name="description" rows="4" required></textarea>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add-publisher">Publisher</label>
-                    <input type="text" id="add-publisher" name="publisher" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="add-image">Image URL</label>
-                    <input type="text" id="add-image" name="image" required>
-                </div>
-                
-                <div class="form-actions">
-                    <button type="submit" class="primary-btn">
-                        <i class="fa fa-plus" aria-hidden="true"></i>
-                        Add Book
-                    </button>
-                </div>
-            </form>
-        </div>
-    </div>
-
-    <!-- Delete Confirmation Modal -->
-    <div class="modal-overlay" id="delete-modal-overlay">
-        <div class="modal-content delete-modal">
-            <h2 class="modal-title">Confirm Deletion</h2>
-            <p class="delete-message">Are you sure you want to delete this book? This action cannot be undone.</p>
-            
-            <div class="delete-actions">
-                <button id="cancel-delete" class="secondary-btn">
-                    <i class="fa fa-times" aria-hidden="true"></i>
-                    Cancel
-                </button>
-                <button id="confirm-delete" class="warning-btn">
-                    <i class="fa fa-trash" aria-hidden="true"></i>
-                    Delete
-                </button>
             </div>
         </div>
     </div>
-    <script src="./src/script.ts"></script>
+
+    <script src="./dist/auth.js"></script>
 </body>
 </html>

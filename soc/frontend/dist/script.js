@@ -39,8 +39,77 @@ document.addEventListener("DOMContentLoaded", function () {
     if (cartFooter) {
         cartFooter.insertBefore(cartTotalPrice, checkoutBtn);
     }
+    // Role constants
+    const ROLE_TYPES = {
+        ADMIN: 1,
+        LIBRARIAN: 2,
+        BORROWER: 3
+    };
     let cartItems = [];
     let allBooks = [];
+    let currentUser = null;
+    // Check for logged in user and set user info
+    function checkUserAuthentication() {
+        const token = localStorage.getItem('token');
+        if (!token) {
+            // Redirect to login page if not logged in
+            window.location.href = '/index.html';
+            return false;
+        }
+        const userString = localStorage.getItem('user');
+        if (userString) {
+            try {
+                currentUser = JSON.parse(userString);
+                console.log("Current user role:", currentUser.role_id);
+                setupUIBasedOnRole(currentUser.role_id);
+                return true;
+            }
+            catch (e) {
+                console.error("Error parsing user data:", e);
+                localStorage.removeItem('user');
+                localStorage.removeItem('token');
+                window.location.href = '/index.html';
+                return false;
+            }
+        }
+        else {
+            // User info not found, clear token and redirect
+            localStorage.removeItem('token');
+            window.location.href = '/index.html';
+            return false;
+        }
+    }
+    // Set up UI based on user role
+    function setupUIBasedOnRole(roleId) {
+        // Hide all CRUD buttons by default
+        if (addBookBtn) {
+            addBookBtn.style.display = 'none';
+        }
+        // Show/hide elements based on role
+        switch (roleId) {
+            case ROLE_TYPES.ADMIN:
+                // Admins can do everything
+                if (addBookBtn) {
+                    addBookBtn.style.display = 'block';
+                }
+                break;
+            case ROLE_TYPES.LIBRARIAN:
+                // Librarians can see but not delete
+                if (addBookBtn) {
+                    addBookBtn.style.display = 'block';
+                }
+                break;
+            case ROLE_TYPES.BORROWER:
+                // Borrowers can only view books
+                break;
+            default:
+                // Unknown role, redirect to login
+                localStorage.removeItem('token');
+                localStorage.removeItem('user');
+                window.location.href = '/index.html';
+        }
+    }
+    // Function to fetch books from the server
     function fetchBooks() {
         return __awaiter(this, arguments, void 0, function* (params = {}) {
             try {
@@ -49,23 +118,49 @@ document.addEventListener("DOMContentLoaded", function () {
                 }
                 const queryParams = new URLSearchParams(params).toString();
                 const url = `http://localhost:5000/api/books${queryParams ? `?${queryParams}` : ''}`;
-                const response = yield fetch(url);
-                const data = yield response.json();
-                allBooks = data;
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                const headers = {
+                    'Content-Type': 'application/json'
+                };
+                // Add authorization header if token exists
+                if (token) {
+                    headers['Authorization'] = `Bearer ${token}`;
+                }
+                const response = yield fetch(url, {
+                    headers
+                });
+                if (!response.ok) {
+                    throw new Error(`HTTP error! Status: ${response.status}`);
+                }
+                const books = yield response.json();
+                console.log("Fetched books:", books);
+                allBooks = books;
                 if (loadingContainer) {
                     loadingContainer.style.display = "none";
                 }
-                return data;
+                const stats = {
+                    totalBooks: books.length,
+                    avgPages: books.length
+                        ? Math.round(books.reduce((sum, book) => sum + parseInt(book.pages), 0) / books.length)
+                        : 0,
+                    oldestBook: books.length
+                        ? Math.min(...books.map((book) => parseInt(book.year)))
+                        : null,
+                    uniqueGenres: new Set(books.map((book) => book.genre)).size
+                };
+                return { books, stats };
             }
             catch (error) {
                 console.error("Error fetching books:", error);
                 if (loadingContainer) {
                     loadingContainer.style.display = "none";
                 }
-                return { books: [], stats: {} };
+                return { books: [], stats: { totalBooks: 0, avgPages: 0, oldestBook: null, uniqueGenres: 0 } };
             }
         });
     }
+    // Function to filter and sort books
     function filterAndSortBooks() {
         const searchTerm = searchInput.value.toLowerCase().trim();
         const genre = genreFilter ? genreFilter.value : '';
@@ -85,85 +180,97 @@ document.addEventListener("DOMContentLoaded", function () {
             updateStats(stats);
         });
     }
-    fetchBooks().then(({ books, stats }) => {
-        displayBooks(books);
-        updateStats(stats);
-    });
-    if (applyFiltersBtn) {
-        applyFiltersBtn.addEventListener("click", filterAndSortBooks);
-    }
-    if (searchInput) {
-        searchInput.addEventListener("keyup", function (event) {
-            if (event.key === "Enter") {
-                filterAndSortBooks();
-            }
-        });
-    }
+    // Function to display books in the UI
     function displayBooks(books) {
-        if (booksContainer)
-            booksContainer.innerHTML = "";
+        if (!booksContainer)
+            return;
+        booksContainer.innerHTML = "";
         if (books.length === 0) {
             const noResults = document.createElement('div');
             noResults.className = 'no-results';
             noResults.textContent = 'No books match your filters. Try adjusting your search criteria.';
-            if (booksContainer)
-                booksContainer.appendChild(noResults);
+            booksContainer.appendChild(noResults);
             return;
         }
-        books.forEach((result) => {
+        books.forEach((book) => {
             const bookCard = document.createElement("div");
             bookCard.className = "book-card";
             const bookImage = document.createElement("div");
             bookImage.className = "book-image";
             const image = document.createElement("img");
             image.className = "image";
-            image.src = result.image;
-            image.alt = result.title;
+            image.src = book.image;
+            image.alt = book.title;
             const bookCategory = document.createElement("div");
             bookCategory.className = "book-category";
-            bookCategory.textContent = result.genre;
+            bookCategory.textContent = book.genre;
+            const bookOverlay = document.createElement("div");
+            bookOverlay.className = "book-overlay";
             const bookActions = document.createElement("div");
             bookActions.className = "book-actions";
-            const editBtn = document.createElement("button");
-            editBtn.className = "action-btn edit-btn";
-            editBtn.setAttribute("data-id", result.id);
-            editBtn.innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i>';
-            editBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openEditModal(result);
-            });
-            const deleteBtn = document.createElement("button");
-            deleteBtn.className = "action-btn delete-btn";
-            deleteBtn.setAttribute("data-id", result.id);
-            deleteBtn.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
-            deleteBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                openDeleteModal(result.id);
-            });
-            bookActions.appendChild(editBtn);
-            bookActions.appendChild(deleteBtn);
+            // Only add edit and delete buttons based on role
+            if (currentUser) {
+                // Admins get full access
+                if (currentUser.role_id === ROLE_TYPES.ADMIN) {
+                    // Add edit button
+                    const editBtn = document.createElement("button");
+                    editBtn.className = "action-btn edit-btn";
+                    editBtn.setAttribute("data-id", book.id);
+                    editBtn.innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i>';
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEditModal(book);
+                    });
+                    // Add delete button
+                    const deleteBtn = document.createElement("button");
+                    deleteBtn.className = "action-btn delete-btn";
+                    deleteBtn.setAttribute("data-id", book.id);
+                    deleteBtn.innerHTML = '<i class="fa fa-trash" aria-hidden="true"></i>';
+                    deleteBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openDeleteModal(book.id);
+                    });
+                    bookActions.appendChild(editBtn);
+                    bookActions.appendChild(deleteBtn);
+                }
+                // Librarians can edit but not delete
+                else if (currentUser.role_id === ROLE_TYPES.LIBRARIAN) {
+                    // Add edit button only
+                    const editBtn = document.createElement("button");
+                    editBtn.className = "action-btn edit-btn";
+                    editBtn.setAttribute("data-id", book.id);
+                    editBtn.innerHTML = '<i class="fa fa-pencil" aria-hidden="true"></i>';
+                    editBtn.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        openEditModal(book);
+                    });
+                    bookActions.appendChild(editBtn);
+                }
+                // Borrowers don't get CRUD buttons
+            }
+            bookOverlay.appendChild(bookActions);
             bookImage.appendChild(image);
             bookImage.appendChild(bookCategory);
-            bookImage.appendChild(bookActions);
+            bookImage.appendChild(bookOverlay);
             const bookInfo = document.createElement("div");
             bookInfo.className = "book-info";
             const bookTitle = document.createElement("h3");
             bookTitle.className = "book-title";
-            bookTitle.textContent = result.title;
+            bookTitle.textContent = book.title;
             const bookAuthor = document.createElement("p");
             bookAuthor.className = "book-author";
-            bookAuthor.textContent = result.author;
+            bookAuthor.textContent = book.author;
             const bookMeta = document.createElement("div");
             bookMeta.className = "book-meta";
             const year = document.createElement("span");
             year.id = "year";
-            year.textContent = result.year;
+            year.textContent = book.year;
             const pages = document.createElement("span");
             pages.id = "pages";
-            pages.textContent = `${result.pages} pages`;
+            pages.textContent = `${book.pages} pages`;
             const price = document.createElement("span");
             price.id = "price";
-            price.textContent = `$${result.price.toFixed(2)}`;
+            price.textContent = `$${Number(book.price).toFixed(2)}`;
             price.style.color = "var(--primary)";
             price.style.fontWeight = "bold";
             bookMeta.appendChild(year);
@@ -171,28 +278,20 @@ document.addEventListener("DOMContentLoaded", function () {
             bookMeta.appendChild(price);
             const description = document.createElement("p");
             description.className = "book-description";
-            description.textContent = result.description;
+            description.textContent = book.description;
             const bookPublisher = document.createElement("p");
             bookPublisher.className = "book-publisher";
-            bookPublisher.textContent = result.publisher;
+            bookPublisher.textContent = book.publisher;
             const bookId = document.createElement("p");
             bookId.className = 'id-book';
-            bookId.textContent = result.id;
+            bookId.textContent = book.id;
             bookId.style.display = 'none';
             const buyBook = document.createElement("button");
             buyBook.className = "buy-book";
-            buyBook.textContent = `Buy Now • $${result.price.toFixed(2)}`;
+            buyBook.textContent = `Buy Now • $${Number(book.price).toFixed(2)}`;
             buyBook.addEventListener('click', function (e) {
                 e.stopPropagation();
-                const target = e.target;
-                let bookId = null;
-                if (target && target.parentNode) {
-                    const idElement = target.parentNode.querySelector('.id-book');
-                    bookId = idElement ? idElement.textContent : null;
-                }
-                if (bookId) {
-                    addToCart(bookId, books);
-                }
+                addToCart(book.id);
             });
             bookInfo.appendChild(bookTitle);
             bookInfo.appendChild(bookAuthor);
@@ -204,12 +303,12 @@ document.addEventListener("DOMContentLoaded", function () {
             bookCard.appendChild(bookImage);
             bookCard.appendChild(bookInfo);
             bookCard.addEventListener('click', () => {
-                showBookModal(result);
+                showBookModal(book);
             });
-            if (booksContainer)
-                booksContainer.appendChild(bookCard);
+            booksContainer.appendChild(bookCard);
         });
     }
+    // Function to update statistics in the UI
     function updateStats(stats) {
         const totalBooksElement = document.getElementById("total-books");
         if (totalBooksElement) {
@@ -229,10 +328,13 @@ document.addEventListener("DOMContentLoaded", function () {
             genresCountElement.textContent = stats.uniqueGenres.toString();
         }
     }
-    function addToCart(bookId, booksArray) {
-        const bookToAdd = booksArray.find((book) => book.id === bookId);
-        if (!bookToAdd)
+    // Add book to shopping cart
+    function addToCart(bookId) {
+        const bookToAdd = allBooks.find(book => book.id === bookId);
+        if (!bookToAdd) {
+            console.error("Book not found:", bookId);
             return;
+        }
         const existingItemIndex = cartItems.findIndex(item => item.id === bookId);
         if (existingItemIndex !== -1) {
             cartItems[existingItemIndex].quantity += 1;
@@ -243,16 +345,13 @@ document.addEventListener("DOMContentLoaded", function () {
         updateCartUI();
         showNotification(`Added "${bookToAdd.title}" to cart`);
     }
+    // Update cart UI elements
     function updateCartUI() {
-        if (!cartCountElement || !cartTotalItems || !cartTotalPrice)
+        if (!cartCountElement || !cartTotalItems)
             return;
         const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
-        if (cartCountElement) {
-            cartCountElement.textContent = totalItems.toString();
-        }
-        if (cartTotalItems) {
-            cartTotalItems.textContent = `${totalItems} ${totalItems === 1 ? 'book' : 'books'}`;
-        }
+        cartCountElement.textContent = totalItems.toString();
+        cartTotalItems.textContent = `${totalItems} ${totalItems === 1 ? 'book' : 'books'}`;
         const totalPrice = cartItems.reduce((total, item) => {
             return total + (item.price * item.quantity);
         }, 0);
@@ -262,9 +361,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
         renderCartItems();
     }
+    // Render items in the cart
     function renderCartItems() {
         if (!cartItemsContainer || !cartEmptyMessage || !checkoutBtn)
             return;
+        // Remove existing items
         const itemElements = cartItemsContainer.querySelectorAll('.cart-item');
         itemElements.forEach(item => item.remove());
         if (cartItems.length === 0) {
@@ -309,6 +410,7 @@ document.addEventListener("DOMContentLoaded", function () {
         });
         addCartItemEventListeners();
     }
+    // Add event listeners to cart items
     function addCartItemEventListeners() {
         const increaseButtons = document.querySelectorAll('.increase-quantity');
         increaseButtons.forEach(button => {
@@ -338,6 +440,7 @@ document.addEventListener("DOMContentLoaded", function () {
             });
         });
     }
+    // Increment quantity of cart item
     function incrementCartItem(id) {
         const itemIndex = cartItems.findIndex(item => item.id === id);
         if (itemIndex !== -1) {
@@ -345,6 +448,7 @@ document.addEventListener("DOMContentLoaded", function () {
             updateCartUI();
         }
     }
+    // Decrement quantity of cart item
     function decrementCartItem(id) {
         const itemIndex = cartItems.findIndex(item => item.id === id);
         if (itemIndex !== -1) {
@@ -358,11 +462,13 @@ document.addEventListener("DOMContentLoaded", function () {
             updateCartUI();
         }
     }
+    // Remove item from cart
     function removeCartItem(id) {
         cartItems = cartItems.filter(item => item.id !== id);
         updateCartUI();
         showNotification("Item removed from cart");
     }
+    // Show notification
     function showNotification(message) {
         const notification = document.createElement('div');
         notification.className = 'notification';
@@ -394,21 +500,34 @@ document.addEventListener("DOMContentLoaded", function () {
             }, 300);
         }, 3000);
     }
-    function showBookModal(result) {
+    // Show book details modal
+    function showBookModal(book) {
         const modal = document.createElement('div');
         modal.className = 'book-modal';
         modal.innerHTML = `
       <div class="modal-content">
         <span class="close-button">&times;</span>
-        <h2>${result.title}</h2>
-        <p><strong>Author:</strong> ${result.author}</p>
-        <p><strong>Genre:</strong> ${result.genre}</p>
-        <p><strong>Year:</strong> ${result.year}</p>
-        <p><strong>Pages:</strong> ${result.pages}</p>
-        <p><strong>Price:</strong> $${result.price.toFixed(2)}</p>
-        <p><strong>Description:</strong> ${result.description}</p>
-        <p><strong>Publisher:</strong> ${result.publisher}</p>
-        <img src="${result.image}" alt="${result.title}">
+        <div class="modal-book-details">
+          <div class="modal-book-image">
+            <img src="${book.image}" alt="${book.title}">
+          </div>
+          <div class="modal-book-info">
+            <h2>${book.title}</h2>
+            <p><strong>Author:</strong> ${book.author}</p>
+            <p><strong>Genre:</strong> ${book.genre}</p>
+            <p><strong>Year:</strong> ${book.year}</p>
+            <p><strong>Pages:</strong> ${book.pages}</p>
+            <p><strong>Price:</strong> $${Number(book.price).toFixed(2)}</p>
+            <p><strong>Publisher:</strong> ${book.publisher}</p>
+            <div class="modal-book-description">
+              <h3>Description</h3>
+              <p>${book.description}</p>
+            </div>
+            <button class="modal-buy-button" data-id="${book.id}">
+              Add to Cart &bull; $${Number(book.price).toFixed(2)}
+            </button>
+          </div>
+        </div>
       </div>
     `;
         document.body.appendChild(modal);
@@ -418,12 +537,22 @@ document.addEventListener("DOMContentLoaded", function () {
                 document.body.removeChild(modal);
             });
         }
+        const buyButton = modal.querySelector('.modal-buy-button');
+        if (buyButton) {
+            buyButton.addEventListener('click', function () {
+                const id = this.getAttribute('data-id');
+                if (id) {
+                    addToCart(id);
+                }
+            });
+        }
         modal.addEventListener('click', (e) => {
             if (e.target === modal) {
                 document.body.removeChild(modal);
             }
         });
     }
+    // Cart modal functionality
     const cartButton = document.getElementById('cart-button');
     const cartOverlay = document.getElementById('cart-overlay');
     const cartModal = document.querySelector('.cart-modal');
@@ -449,6 +578,7 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
+    // Checkout button functionality
     if (checkoutBtn) {
         checkoutBtn.addEventListener('click', function () {
             if (cartItems.length > 0) {
@@ -461,6 +591,10 @@ document.addEventListener("DOMContentLoaded", function () {
     // Add Book Modal
     if (addBookBtn && addModalOverlay) {
         addBookBtn.addEventListener('click', () => {
+            if (!currentUser || (currentUser.role_id !== ROLE_TYPES.ADMIN && currentUser.role_id !== ROLE_TYPES.LIBRARIAN)) {
+                showNotification("You don't have permission to add books");
+                return;
+            }
             openAddModal();
         });
     }
@@ -485,6 +619,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Edit Book Modal
     function openEditModal(book) {
+        // Check if user has permission to edit
+        if (!currentUser || (currentUser.role_id !== ROLE_TYPES.ADMIN && currentUser.role_id !== ROLE_TYPES.LIBRARIAN)) {
+            showNotification("You don't have permission to edit books");
+            return;
+        }
         if (editModalOverlay) {
             editModalOverlay.classList.add('active');
             const editBookId = document.getElementById('edit-book-id');
@@ -528,6 +667,11 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     // Delete Confirmation Modal
     function openDeleteModal(bookId) {
+        // Check if user has permission to delete
+        if (!currentUser || currentUser.role_id !== ROLE_TYPES.ADMIN) {
+            showNotification("Only administrators can delete books");
+            return;
+        }
         if (deleteModalOverlay) {
             deleteModalOverlay.classList.add('active');
             currentBookIdToDelete = bookId;
@@ -547,46 +691,56 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-    // Form Submissions
+    // Add Book Form Submission
     if (addBookForm) {
         addBookForm.addEventListener('submit', (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
+            // Check if user has permission to add books
+            if (!currentUser || (currentUser.role_id !== ROLE_TYPES.ADMIN && currentUser.role_id !== ROLE_TYPES.LIBRARIAN)) {
+                showNotification("You don't have permission to add books");
+                return;
+            }
             const formData = new FormData(addBookForm);
             const bookData = {};
             formData.forEach((value, key) => {
                 bookData[key] = value;
             });
-            // Add price field (random between $9.99 and $29.99)
             const price = (Math.random() * 20 + 9.99).toFixed(2);
             bookData['price'] = price;
             try {
                 if (loadingContainer) {
                     loadingContainer.style.display = "flex";
                 }
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("Authentication required");
+                }
                 const response = yield fetch('http://localhost:5000/api/books', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(bookData),
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to add book');
+                    const errorData = yield response.json();
+                    throw new Error(errorData.message || `Failed to add book: ${response.status}`);
                 }
                 // Close modal and refresh books
                 if (addModalOverlay) {
                     addModalOverlay.classList.remove('active');
                 }
                 // Refresh book list
-                fetchBooks().then(({ books, stats }) => {
-                    displayBooks(books);
-                    updateStats(stats);
-                });
+                const { books, stats } = yield fetchBooks();
+                displayBooks(books);
+                updateStats(stats);
                 showNotification('Book added successfully!');
             }
             catch (error) {
                 console.error("Error adding book:", error);
-                showNotification('Failed to add book. Please try again.');
+                showNotification(error instanceof Error ? error.message : 'Failed to add book. Please try again.');
             }
             finally {
                 if (loadingContainer) {
@@ -595,9 +749,15 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }));
     }
+    // Edit Book Form Submission
     if (editBookForm) {
         editBookForm.addEventListener('submit', (e) => __awaiter(this, void 0, void 0, function* () {
             e.preventDefault();
+            // Check if user has permission to edit books
+            if (!currentUser || (currentUser.role_id !== ROLE_TYPES.ADMIN && currentUser.role_id !== ROLE_TYPES.LIBRARIAN)) {
+                showNotification("You don't have permission to edit books");
+                return;
+            }
             const formData = new FormData(editBookForm);
             const bookData = {};
             const bookId = document.getElementById('edit-book-id').value;
@@ -610,30 +770,42 @@ document.addEventListener("DOMContentLoaded", function () {
                 if (loadingContainer) {
                     loadingContainer.style.display = "flex";
                 }
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("Authentication required");
+                }
                 const response = yield fetch(`http://localhost:5000/api/books/${bookId}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`
                     },
                     body: JSON.stringify(bookData),
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to update book');
+                    const errorData = yield response.json();
+                    throw new Error(errorData.message || `Failed to update book: ${response.status}`);
                 }
                 // Close modal and refresh books
                 if (editModalOverlay) {
                     editModalOverlay.classList.remove('active');
                 }
-                // Refresh book list
-                fetchBooks().then(({ books, stats }) => {
-                    displayBooks(books);
-                    updateStats(stats);
-                });
+                const editedBookIndex = cartItems.findIndex(item => item.id === bookId);
+                if (editedBookIndex !== -1) {
+                    const quantity = cartItems[editedBookIndex].quantity;
+                    const updatedBook = Object.assign(Object.assign({}, bookData), { id: bookId, price: parseFloat(bookData.price) });
+                    cartItems[editedBookIndex] = Object.assign(Object.assign({}, updatedBook), { quantity });
+                    updateCartUI();
+                }
+                const { books, stats } = yield fetchBooks();
+                displayBooks(books);
+                updateStats(stats);
                 showNotification('Book updated successfully!');
             }
             catch (error) {
                 console.error("Error updating book:", error);
-                showNotification('Failed to update book. Please try again.');
+                showNotification(error instanceof Error ? error.message : 'Failed to update book. Please try again.');
             }
             finally {
                 if (loadingContainer) {
@@ -642,19 +814,34 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }));
     }
+    // Delete Book Confirmation
     if (confirmDeleteBtn) {
         confirmDeleteBtn.addEventListener('click', () => __awaiter(this, void 0, void 0, function* () {
             if (!currentBookIdToDelete)
                 return;
+            // Check if user has permission to delete books
+            if (!currentUser || currentUser.role_id !== ROLE_TYPES.ADMIN) {
+                showNotification("Only administrators can delete books");
+                return;
+            }
             try {
                 if (loadingContainer) {
                     loadingContainer.style.display = "flex";
                 }
+                // Get token from localStorage
+                const token = localStorage.getItem('token');
+                if (!token) {
+                    throw new Error("Authentication required");
+                }
                 const response = yield fetch(`http://localhost:5000/api/books/${currentBookIdToDelete}`, {
                     method: 'DELETE',
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
                 });
                 if (!response.ok) {
-                    throw new Error('Failed to delete book');
+                    const errorData = yield response.json();
+                    throw new Error(errorData.message || `Failed to delete book: ${response.status}`);
                 }
                 // Close modal
                 if (deleteModalOverlay) {
@@ -664,15 +851,14 @@ document.addEventListener("DOMContentLoaded", function () {
                 cartItems = cartItems.filter(item => item.id !== currentBookIdToDelete);
                 updateCartUI();
                 // Refresh book list
-                fetchBooks().then(({ books, stats }) => {
-                    displayBooks(books);
-                    updateStats(stats);
-                });
+                const { books, stats } = yield fetchBooks();
+                displayBooks(books);
+                updateStats(stats);
                 showNotification('Book deleted successfully!');
             }
             catch (error) {
                 console.error("Error deleting book:", error);
-                showNotification('Failed to delete book. Please try again.');
+                showNotification(error instanceof Error ? error.message : 'Failed to delete book. Please try again.');
             }
             finally {
                 if (loadingContainer) {
@@ -681,6 +867,16 @@ document.addEventListener("DOMContentLoaded", function () {
                 currentBookIdToDelete = null;
             }
         }));
+    }
+    // Logout functionality
+    const logoutBtn = document.getElementById('logout-button');
+    if (logoutBtn) {
+        logoutBtn.addEventListener('click', () => {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            localStorage.removeItem('refresh_token');
+            window.location.href = '/index.html';
+        });
     }
     // Global ESC key handler for all modals
     document.addEventListener('keydown', (e) => {
@@ -697,6 +893,31 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         }
     });
-    updateCartUI();
+    // Initialize the app
+    function init() {
+        // Check user authentication first
+        if (checkUserAuthentication()) {
+            // Initial fetch of books
+            fetchBooks().then(({ books, stats }) => {
+                displayBooks(books);
+                updateStats(stats);
+            });
+            // Initialize cart UI
+            updateCartUI();
+            // Set up event listeners for filters
+            if (applyFiltersBtn) {
+                applyFiltersBtn.addEventListener("click", filterAndSortBooks);
+            }
+            if (searchInput) {
+                searchInput.addEventListener("keyup", function (event) {
+                    if (event.key === "Enter") {
+                        filterAndSortBooks();
+                    }
+                });
+            }
+        }
+    }
+    // Run the initialization
+    init();
 });
 //# sourceMappingURL=script.js.map

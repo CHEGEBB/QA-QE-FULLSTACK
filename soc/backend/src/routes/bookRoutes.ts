@@ -1,13 +1,23 @@
-import express from "express"
-import { createBook, deleteBook, getBookById, getBooks, updateBook } from "../controllers/bookController"
+import express from "express";
+import { 
+  createBook,
+  getBooks,
+  getBookById,
+  updateBook,
+  deleteBook
+} from "@app/controllers/bookController";
+import { protect } from "@app/middlewares/auth/protect";
 
-const router = express.Router()
+const router = express.Router();
 
-//create the routs
-router.post("/", createBook)
+// Add a console.log to confirm this file is executed
+console.log("BookRoutes initialized");
+
+// Book routes
+router.post("/", protect, createBook);
 router.get("/", getBooks);
-router.get("/:id", getBookById);
-router.put("/:id", updateBook);
-router.delete("/:id", deleteBook);
+router.get("/:book_id", getBookById);
+router.put("/:book_id", protect, updateBook);
+router.delete("/:book_id", protect, deleteBook);
 
-export default router
+export default router;
