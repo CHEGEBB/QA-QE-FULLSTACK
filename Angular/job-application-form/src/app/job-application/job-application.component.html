@@ -1,0 +1,89 @@
+<form [formGroup]="jobForm" (ngSubmit)="onSubmit()">
+    <div class="form-container">
+      <h2>Job Application Form</h2>
+  
+      <div formGroupName="personalInfo">
+        <div class="form-group">
+          <label for="firstName">First Name</label>
+          <input 
+            id="firstName" 
+            type="text" 
+            formControlName="firstName"
+          >
+          <div *ngIf="jobForm.get('personalInfo')?.get('firstName')?.invalid && 
+                      jobForm.get('personalInfo')?.get('firstName')?.touched">
+            <small *ngIf="jobForm.get('personalInfo')?.get('firstName')?.hasError('required')">
+              First name is required
+            </small>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="lastName">Last Name</label>
+          <input 
+            id="lastName" 
+            type="text" 
+            formControlName="lastName"
+          >
+          <div *ngIf="jobForm.get('personalInfo')?.get('lastName')?.invalid && 
+                      jobForm.get('personalInfo')?.get('lastName')?.touched">
+            <small *ngIf="jobForm.get('personalInfo')?.get('lastName')?.hasError('required')">
+              Last name is required
+            </small>
+          </div>
+        </div>
+  
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input 
+            id="email" 
+            type="email" 
+            formControlName="email"
+          >
+          <div *ngIf="jobForm.get('personalInfo')?.get('email')?.invalid && 
+                      jobForm.get('personalInfo')?.get('email')?.touched">
+            <small *ngIf="jobForm.get('personalInfo')?.get('email')?.hasError('required')">
+              Email is required
+            </small>
+            <small *ngIf="jobForm.get('personalInfo')?.get('email')?.hasError('email')">
+              Invalid email format
+            </small>
+          </div>
+        </div>
+      </div>
+  
+      <div class="skills-section">
+        <h3>Skills</h3>
+        <div formArrayName="skills">
+          <div *ngFor="let skill of skills.controls; let i = index" 
+               [formGroupName]="i" class="skill-row">
+            <input 
+              type="text" 
+              formControlName="name" 
+              placeholder="Skill Name"
+            >
+            <input 
+              type="number" 
+              formControlName="experience" 
+              placeholder="Years of Experience"
+            >
+            <button type="button" (click)="removeSkill(i)" class="remove-skill">
+              Remove
+            </button>
+          </div>
+          
+          <button type="button" (click)="addSkill()" class="add-skill">
+            Add Skill
+          </button>
+        </div>
+      </div>
+  
+      <button 
+        type="submit" 
+        [disabled]="jobForm.invalid"
+        class="submit-button"
+      >
+        Submit Application
+      </button>
+    </div>
+  </form>

@@ -1,0 +1,29 @@
+<form #registrationForm="ngForm" (ngSubmit)="onSubmit()">
+    <input 
+    type="text"
+    name="username"
+    [(ngModel)]="user.username"
+    required
+    #username="ngModel"
+    />
+
+    <div *ngIf="username.invalid && username.touched">
+        Username is required.
+    </div>
+    
+    <input 
+    type="email"
+    name="email"
+    [(ngModel)]="user.email"
+    required
+    #email="ngModel"
+    />
+
+    <button
+    type="submit"
+    [disabled]="registrationForm.invalid"
+    >Submit
+</button>
+
+
+</form>
