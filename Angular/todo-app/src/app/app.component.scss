@@ -1,0 +1,48 @@
+.app-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    
+    header {
+      margin-bottom: 30px;
+      text-align: center;
+      
+      h1 {
+        color: #333;
+        font-size: 2rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        
+        i {
+          color: #4a90e2;
+        }
+      }
+    }
+    
+    main {
+      margin-bottom: 40px;
+    }
+    
+    footer {
+      text-align: center;
+      padding: 20px 0;
+      color: #888;
+      font-size: 0.9rem;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .app-container {
+      padding: 15px;
+      
+      header {
+        margin-bottom: 20px;
+        
+        h1 {
+          font-size: 1.6rem;
+        }
+      }
+    }
+  }

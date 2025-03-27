@@ -1,0 +1,33 @@
+<div class="todo-item" [class.completed]="todo.completed">
+    <div class="todo-item-header">
+      <div class="todo-checkbox-title">
+        <label class="checkbox-container">
+          <input type="checkbox" [checked]="todo.completed" (change)="toggleComplete()">
+          <span class="checkmark"></span>
+        </label>
+        <h3 class="todo-title" [class.completed]="todo.completed">{{ todo.title }}</h3>
+      </div>
+      
+      <div class="todo-actions">
+        <span class="priority-badge" [ngClass]="todo.priority">
+          {{ todo.priority }}
+        </span>
+        <button class="btn-expand" (click)="toggleExpand()">
+          <i class="fa" [ngClass]="expanded ? 'fa-chevron-up' : 'fa-chevron-down'"></i>
+        </button>
+        <button class="btn-delete" (click)="deleteTodo()">
+          <i class="fa fa-trash"></i>
+        </button>
+      </div>
+    </div>
+    
+    <div class="todo-item-details" *ngIf="expanded">
+      <p *ngIf="todo.description" class="todo-description">{{ todo.description }}</p>
+      <div class="todo-meta">
+        <span class="todo-date">
+          <i class="fa fa-calendar"></i>
+          {{ formatDate(todo.createdAt) }}
+        </span>
+      </div>
+    </div>
+  </div>

@@ -1,0 +1,43 @@
+<div class="todo-form">
+    <h2>Add New Task</h2>
+    
+    <div class="form-group">
+      <input 
+        type="text" 
+        placeholder="Task title" 
+        class="form-control"
+        [(ngModel)]="title" 
+        (keyup.enter)="addTodo()"
+      >
+    </div>
+    
+    <div class="form-group">
+      <textarea 
+        placeholder="Description (optional)" 
+        class="form-control"
+        [(ngModel)]="description"
+      ></textarea>
+    </div>
+    
+    <div class="form-group priority-selector">
+      <span>Priority:</span>
+      <div class="priority-options">
+        <label>
+          <input type="radio" name="priority" [(ngModel)]="priority" value="low">
+          <span class="priority-label low">Low</span>
+        </label>
+        <label>
+          <input type="radio" name="priority" [(ngModel)]="priority" value="medium">
+          <span class="priority-label medium">Medium</span>
+        </label>
+        <label>
+          <input type="radio" name="priority" [(ngModel)]="priority" value="high">
+          <span class="priority-label high">High</span>
+        </label>
+      </div>
+    </div>
+    
+    <button class="btn-add" (click)="addTodo()">
+      <i class="fa fa-plus"></i> Add Task
+    </button>
+  </div>

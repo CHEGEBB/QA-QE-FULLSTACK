@@ -1,0 +1,128 @@
+.todo-form {
+    background-color: white;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    
+    h2 {
+      margin-top: 0;
+      color: #333;
+      font-size: 1.5rem;
+      margin-bottom: 15px;
+    }
+    
+    .form-group {
+      margin-bottom: 15px;
+    }
+    
+    .form-control {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 1rem;
+      transition: border-color 0.3s;
+      
+      &:focus {
+        outline: none;
+        border-color: #4a90e2;
+        box-shadow: 0 0 0 2px rgba(74, 144, 226, 0.2);
+      }
+    }
+    
+    textarea.form-control {
+      min-height: 80px;
+      resize: vertical;
+    }
+    
+    .priority-selector {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      
+      span {
+        color: #555;
+        font-weight: 500;
+      }
+      
+      .priority-options {
+        display: flex;
+        gap: 10px;
+        
+        label {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          
+          input {
+            position: absolute;
+            opacity: 0;
+            
+            &:checked + .priority-label {
+              font-weight: bold;
+              box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.1);
+            }
+          }
+          
+          .priority-label {
+            padding: 5px 10px;
+            border-radius: 4px;
+            transition: all 0.2s;
+            
+            &.low {
+              background-color: #e8f5e9;
+              color: #2e7d32;
+            }
+            
+            &.medium {
+              background-color: #fff8e1;
+              color: #ff8f00;
+            }
+            
+            &.high {
+              background-color: #ffebee;
+              color: #c62828;
+            }
+          }
+        }
+      }
+    }
+    
+    .btn-add {
+      background-color: #4a90e2;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      padding: 12px 20px;
+      font-size: 1rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: background-color 0.3s;
+      width: 100%;
+      margin-top: 10px;
+      
+      &:hover {
+        background-color: darken(#4a90e2, 10%);
+      }
+      
+      i {
+        font-size: 0.9rem;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .priority-selector {
+      flex-direction: column;
+      align-items: flex-start;
+      
+      .priority-options {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+  }

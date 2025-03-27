@@ -1,0 +1,52 @@
+<div class="todo-list-container">
+    <div class="todo-filters">
+      <h2>My Tasks</h2>
+      <div class="filter-buttons">
+        <button 
+          [class.active]="filterStatus === 'all'" 
+          (click)="setFilter('all')"
+        >
+          All
+        </button>
+        <button 
+          [class.active]="filterStatus === 'active'" 
+          (click)="setFilter('active')"
+        >
+          Active
+        </button>
+        <button 
+          [class.active]="filterStatus === 'completed'" 
+          (click)="setFilter('completed')"
+        >
+          Completed
+        </button>
+      </div>
+    </div>
+    
+    <div class="todo-stats">
+      <div class="stat">
+        <span class="stat-value">{{ getRemainingCount() }}</span>
+        <span class="stat-label">remaining</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ getCompletedCount() }}</span>
+        <span class="stat-label">completed</span>
+      </div>
+      <div class="stat">
+        <span class="stat-value">{{ todos.length }}</span>
+        <span class="stat-label">total</span>
+      </div>
+    </div>
+    
+    <div class="todo-items">
+      <div *ngIf="filteredTodos.length === 0" class="empty-state">
+        <i class="fa fa-clipboard-check"></i>
+        <p>No tasks to display</p>
+      </div>
+      
+      <app-todo-item 
+        *ngFor="let todo of filteredTodos" 
+        [todo]="todo"
+      ></app-todo-item>
+    </div>
+  </div>

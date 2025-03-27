@@ -1,0 +1,133 @@
+.todo-list-container {
+    margin-top: 20px;
+  }
+  
+  .todo-filters {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    
+    h2 {
+      color: #333;
+      margin: 0;
+      font-weight: 600;
+    }
+    
+    .filter-buttons {
+      display: flex;
+      gap: 8px;
+      
+      button {
+        background: none;
+        border: none;
+        padding: 8px 12px;
+        border-radius: 20px;
+        cursor: pointer;
+        color: #666;
+        font-weight: 500;
+        transition: all 0.2s;
+        
+        &:hover {
+          background-color: #f0f0f0;
+        }
+        
+        &.active {
+          background-color: #4a90e2;
+          color: white;
+        }
+      }
+    }
+  }
+  
+  .todo-stats {
+    display: flex;
+    background-color: white;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+    
+    .stat {
+      flex: 1;
+      text-align: center;
+      padding: 0 15px;
+      position: relative;
+      
+      &:not(:last-child):after {
+        content: '';
+        position: absolute;
+        right: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        height: 70%;
+        width: 1px;
+        background-color: #eee;
+      }
+      
+      .stat-value {
+        display: block;
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: #333;
+      }
+      
+      .stat-label {
+        display: block;
+        font-size: 0.85rem;
+        color: #888;
+        margin-top: 5px;
+      }
+    }
+  }
+  
+  .todo-items {
+    .empty-state {
+      background-color: white;
+      border-radius: 8px;
+      padding: 40px 20px;
+      text-align: center;
+      color: #aaa;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      
+      i {
+        font-size: 2.5rem;
+        margin-bottom: 15px;
+        display: block;
+      }
+      
+      p {
+        font-size: 1.1rem;
+        margin: 0;
+      }
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .todo-filters {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 15px;
+      
+      .filter-buttons {
+        width: 100%;
+        justify-content: space-between;
+      }
+    }
+    
+    .todo-stats {
+      padding: 10px;
+      
+      .stat {
+        padding: 0 10px;
+        
+        .stat-value {
+          font-size: 1.2rem;
+        }
+        
+        .stat-label {
+          font-size: 0.75rem;
+        }
+      }
+    }
+  }
